@@ -16,23 +16,14 @@
 
     @guest
         <div class="mt-8 flex flex-wrap items-center justify-center gap-3">
-            <a href="{{ route('daftar') }}"
-               class="rounded-md bg-indigo-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-indigo-700">
-                Mulai sekarang
-            </a>
-            <a href="{{ route('masuk') }}"
-               class="rounded-md border border-slate-300 bg-white px-5 py-2.5 text-sm font-medium hover:bg-slate-50">
-                Masuk
-            </a>
+            <x-tombol :href="route('daftar')">Mulai sekarang</x-tombol>
+            <x-tombol :href="route('masuk')" jenis="kedua">Masuk</x-tombol>
         </div>
     @endguest
 
     @auth
         <div class="mt-8">
-            <a href="{{ route('beranda') }}"
-               class="rounded-md bg-indigo-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-indigo-700">
-                Buka beranda
-            </a>
+            <x-tombol :href="route('beranda')">Buka beranda</x-tombol>
         </div>
     @endauth
 

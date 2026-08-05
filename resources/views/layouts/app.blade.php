@@ -6,6 +6,11 @@
 
     <title>@yield('judul', 'Beranda') &middot; {{ config('app.name') }}</title>
 
+    <meta name="description" content="StudentHub AI mengumpulkan informasi lomba, beasiswa, dan magang mahasiswa dalam satu tempat, lalu membantu menilai kecocokannya dengan profilmu.">
+
+    <link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
+    <link rel="alternate icon" href="{{ asset('favicon.ico') }}">
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
@@ -15,30 +20,30 @@
         <nav class="mx-auto flex max-w-5xl items-center justify-between gap-4 px-4 py-3">
 
             <a href="{{ route('depan') }}" class="text-lg font-semibold tracking-tight">
-                StudentHub <span class="text-indigo-600">AI</span>
+                StudentHub <span class="text-utama-600">AI</span>
             </a>
 
             <div class="flex items-center gap-4 text-sm">
                 @guest
-                    <a href="{{ route('masuk') }}" class="hover:text-indigo-600">Masuk</a>
+                    <a href="{{ route('masuk') }}" class="hover:text-utama-600">Masuk</a>
                     <a href="{{ route('daftar') }}"
-                       class="rounded-md bg-indigo-600 px-3 py-1.5 font-medium text-white hover:bg-indigo-700">
+                       class="rounded-md bg-utama-600 px-3 py-1.5 font-medium text-white hover:bg-utama-700">
                         Daftar
                     </a>
                 @endguest
 
                 @auth
-                    <a href="{{ route('beranda') }}" class="hover:text-indigo-600">Beranda</a>
+                    <a href="{{ route('beranda') }}" class="hover:text-utama-600">Beranda</a>
 
                     @if (auth()->user()->isAdmin())
-                        <a href="{{ route('admin.dasbor') }}" class="hover:text-indigo-600">Dasbor Admin</a>
+                        <a href="{{ route('admin.dasbor') }}" class="hover:text-utama-600">Dasbor Admin</a>
                     @endif
 
                     <span class="hidden text-slate-500 sm:inline">{{ auth()->user()->name }}</span>
 
                     <form method="POST" action="{{ route('keluar') }}">
                         @csrf
-                        <button type="submit" class="hover:text-indigo-600">Keluar</button>
+                        <button type="submit" class="hover:text-utama-600">Keluar</button>
                     </form>
                 @endauth
             </div>
@@ -50,14 +55,14 @@
 
         @if (session('sukses'))
             <div role="status"
-                 class="mb-6 rounded-md border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
+                 class="mb-6 rounded-md border border-sukses-200 bg-sukses-50 px-4 py-3 text-sm text-sukses-800">
                 {{ session('sukses') }}
             </div>
         @endif
 
         @if (session('gagal'))
             <div role="alert"
-                 class="mb-6 rounded-md border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-800">
+                 class="mb-6 rounded-md border border-bahaya-200 bg-bahaya-50 px-4 py-3 text-sm text-bahaya-800">
                 {{ session('gagal') }}
             </div>
         @endif
@@ -66,8 +71,20 @@
 
     </main>
 
-    <footer class="border-t border-slate-200 py-6 text-center text-xs text-slate-500">
-        StudentHub AI &middot; TCC Vibe Code 2026
+    <footer class="border-t border-slate-200 py-8">
+        <div class="mx-auto flex max-w-5xl flex-col items-center gap-3 px-4 text-center">
+
+            @if (file_exists(public_path('images/logo-tcc.png')))
+                <img src="{{ asset('images/logo-tcc.png') }}"
+                     alt="Logo TCC Vibe Code 2026"
+                     class="h-12 w-auto">
+            @endif
+
+            <p class="text-xs text-slate-500">
+                {{ config('app.name') }} &middot; karya untuk <strong>TCC Vibe Code 2026</strong>
+            </p>
+
+        </div>
     </footer>
 
 </body>

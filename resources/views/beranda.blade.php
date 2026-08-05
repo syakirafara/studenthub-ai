@@ -15,9 +15,9 @@
     </p>
 @endif
 
-<div class="mt-8 rounded-lg border border-dashed border-slate-300 bg-white p-8 text-center">
+<x-kartu class="mt-8 border-dashed p-8 text-center">
     <p class="text-sm text-slate-500">
         Katalog peluang dan rekomendasi akan tampil di sini.
     </p>
-</div>
+</x-kartu>
 @endsection
