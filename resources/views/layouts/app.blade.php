@@ -74,14 +74,21 @@
     <footer class="border-t border-slate-200 py-8">
         <div class="mx-auto flex max-w-5xl flex-col items-center gap-3 px-4 text-center">
 
-            @if (file_exists(public_path('images/logo-tcc.png')))
+            <div class="flex items-center justify-center gap-6">
                 <img src="{{ asset('images/logo-tcc.png') }}"
-                     alt="Logo TCC Vibe Code 2026"
-                     class="h-12 w-auto">
-            @endif
+                     alt="Logo TCC Vibe Code 2026" class="h-12 w-auto">
+                <img src="{{ asset('images/logo-triple-c.png') }}"
+                     alt="Logo Creative Computer Club" class="h-12 w-auto">
+                <img src="{{ asset('images/logo-utm.png') }}"
+                     alt="Logo Universitas Trunojoyo Madura" class="h-12 w-auto">
+            </div>
 
             <p class="text-xs text-slate-500">
                 {{ config('app.name') }} &middot; karya untuk <strong>TCC Vibe Code 2026</strong>
+            </p>
+
+            <p class="text-xs text-slate-400">
+                Diselenggarakan oleh Creative Computer Club &middot; Universitas Trunojoyo Madura
             </p>
 
         </div>
