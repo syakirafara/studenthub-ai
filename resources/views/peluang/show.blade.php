@@ -23,13 +23,13 @@
     $maks   = $syarat['semester_maks'] ?? null;
 @endphp
 
-<a href="{{ route('peluang.index') }}" class="text-sm text-slate-500 hover:text-utama-600">
+<a href="{{ route('peluang.index') }}" class="text-sm text-slate-400 hover:text-utama-300">
     &larr; Kembali ke katalog
 </a>
 
 @if ($peluang->status !== 'disetujui')
     <div role="alert"
-         class="mt-4 rounded-md border border-waspada-200 bg-waspada-50 px-4 py-3 text-sm text-waspada-800">
+         class="mt-4 rounded-lg border border-waspada-400/30 bg-waspada-500/10 px-4 py-3 text-sm text-waspada-200">
         Pratinjau admin. Peluang ini berstatus <strong>{{ $peluang->status }}</strong>
         dan belum tampil di katalog.
     </div>
@@ -49,32 +49,32 @@
             <x-lencana :warna="$warnaDeadline">{{ $peluang->teksDeadline() }}</x-lencana>
         </div>
 
-        <h1 class="mt-3 text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
+        <h1 class="mt-3 font-judul text-3xl font-bold tracking-tight text-white text-white sm:text-3xl">
             {{ $peluang->judul }}
         </h1>
 
         @if ($peluang->penyelenggara)
-            <p class="mt-1 text-slate-500">{{ $peluang->penyelenggara }}</p>
+            <p class="mt-1 text-slate-400">{{ $peluang->penyelenggara }}</p>
         @endif
 
         @if ($peluang->deskripsi)
-            <p class="mt-6 whitespace-pre-line leading-relaxed text-slate-700">{{ $peluang->deskripsi }}</p>
+            <p class="mt-6 whitespace-pre-line leading-relaxed text-slate-200">{{ $peluang->deskripsi }}</p>
         @endif
 
-        <h2 class="mt-8 text-lg font-semibold">Syarat peserta</h2>
+        <h2 class="mt-10 font-judul text-xl font-semibold text-white">Syarat peserta</h2>
 
-        <dl class="mt-3 divide-y divide-slate-200 overflow-hidden rounded-lg border border-slate-200 bg-white">
+        <dl class="mt-3 divide-y divide-white/8 overflow-hidden rounded-xl border border-white/8 bg-white/5">
 
             <div class="flex gap-4 px-4 py-3">
-                <dt class="w-28 shrink-0 text-sm text-slate-500">Jurusan</dt>
-                <dd class="text-sm text-slate-800">
+                <dt class="w-28 shrink-0 text-sm text-slate-400">Jurusan</dt>
+                <dd class="text-sm text-white">
                     {{ empty($syarat['jurusan']) ? 'Semua jurusan' : implode(', ', $syarat['jurusan']) }}
                 </dd>
             </div>
 
             <div class="flex gap-4 px-4 py-3">
-                <dt class="w-28 shrink-0 text-sm text-slate-500">Semester</dt>
-                <dd class="text-sm text-slate-800">
+                <dt class="w-28 shrink-0 text-sm text-slate-400">Semester</dt>
+                <dd class="text-sm text-white">
                     @if ($min && $maks) Semester {{ $min }} sampai {{ $maks }}
                     @elseif ($min) Minimal semester {{ $min }}
                     @elseif ($maks) Maksimal semester {{ $maks }}
@@ -83,8 +83,8 @@
             </div>
 
             <div class="flex gap-4 px-4 py-3">
-                <dt class="w-28 shrink-0 text-sm text-slate-500">Peserta</dt>
-                <dd class="text-sm text-slate-800">
+                <dt class="w-28 shrink-0 text-sm text-slate-400">Peserta</dt>
+                <dd class="text-sm text-white">
                     {{ ($syarat['ukuran_tim'] ?? 1) > 1
                         ? 'Tim maksimal ' . $syarat['ukuran_tim'] . ' orang'
                         : 'Perorangan' }}
@@ -92,16 +92,16 @@
             </div>
 
             <div class="flex gap-4 px-4 py-3">
-                <dt class="w-28 shrink-0 text-sm text-slate-500">Format</dt>
-                <dd class="text-sm text-slate-800">
+                <dt class="w-28 shrink-0 text-sm text-slate-400">Format</dt>
+                <dd class="text-sm text-white">
                     {{ isset($syarat['format']) ? ucfirst($syarat['format']) : 'Tidak disebutkan' }}
                 </dd>
             </div>
 
             @if (! empty($syarat['lainnya']))
                 <div class="flex gap-4 px-4 py-3">
-                    <dt class="w-28 shrink-0 text-sm text-slate-500">Lainnya</dt>
-                    <dd class="text-sm text-slate-800">
+                    <dt class="w-28 shrink-0 text-sm text-slate-400">Lainnya</dt>
+                    <dd class="text-sm text-white">
                         <ul class="list-inside list-disc space-y-1">
                             @foreach ($syarat['lainnya'] as $butir)
                                 <li>{{ $butir }}</li>
@@ -118,16 +118,16 @@
         <x-kartu class="space-y-5">
 
             <div>
-                <p class="text-xs uppercase tracking-wide text-slate-400">Deadline</p>
-                <p class="mt-1 font-medium text-slate-900">
+                <p class="text-xs uppercase tracking-wide text-slate-500">Deadline</p>
+                <p class="mt-1 font-medium text-white">
                     {{ $peluang->deadline?->translatedFormat('d F Y') ?? 'Tidak disebutkan' }}
                 </p>
-                <p class="text-sm text-slate-500">{{ $peluang->teksDeadline() }}</p>
+                <p class="text-sm text-slate-400">{{ $peluang->teksDeadline() }}</p>
             </div>
 
             <div>
-                <p class="text-xs uppercase tracking-wide text-slate-400">Biaya</p>
-                <p class="mt-1 font-medium text-slate-900">
+                <p class="text-xs uppercase tracking-wide text-slate-500">Biaya</p>
+                <p class="mt-1 font-medium text-white">
                     @if ($peluang->biaya === 'gratis')
                         Gratis
                     @elseif ($peluang->biaya === 'berbayar')
@@ -146,12 +146,12 @@
 
             @auth
                 <x-tombol-simpan :peluang="$peluang" :tersimpan="$tersimpan" :berlabel="true"
-                                 class="flex justify-center border-t border-slate-200 pt-4" />
+                                 class="flex justify-center border-t border-white/8 pt-4" />
             @endauth
 
             @guest
-                <p class="border-t border-slate-200 pt-4 text-xs leading-relaxed text-slate-500">
-                    <a href="{{ route('masuk') }}" class="font-medium text-utama-600 hover:underline">Masuk</a>
+                <p class="border-t border-white/8 pt-4 text-xs leading-relaxed text-slate-400">
+                    <a href="{{ route('masuk') }}" class="font-medium text-utama-300 hover:underline">Masuk</a>
                     untuk melihat seberapa cocok peluang ini dengan profilmu.
                 </p>
             @endguest
@@ -164,8 +164,8 @@
             @elseif ($peluang->status === 'disetujui')
                 <x-kartu class="mt-4 space-y-3">
                     <div>
-                        <p class="text-sm font-medium text-slate-700">Seberapa cocok denganmu?</p>
-                        <p class="mt-1 text-sm text-slate-500">
+                        <p class="text-sm font-medium text-slate-200">Seberapa cocok denganmu?</p>
+                        <p class="mt-1 text-sm text-slate-400">
                             AI akan membandingkan syarat peluang ini dengan jurusan, semester,
                             minat, dan kemampuanmu.
                         </p>
@@ -176,7 +176,7 @@
                         <x-tombol class="w-full" data-tombol-skor>Hitung kecocokan</x-tombol>
                     </form>
 
-                    <p class="text-xs text-slate-400">Sekitar 2 detik. Hasilnya disimpan, jadi tidak dihitung dua kali.</p>
+                    <p class="text-xs text-slate-500">Sekitar 2 detik. Hasilnya disimpan, jadi tidak dihitung dua kali.</p>
                 </x-kartu>
             @endif
         @endauth

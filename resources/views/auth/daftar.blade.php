@@ -5,8 +5,8 @@
 @section('isi')
 <div class="mx-auto max-w-md">
 
-    <h1 class="text-2xl font-semibold tracking-tight">Buat akun</h1>
-    <p class="mt-1 text-sm text-slate-500">
+    <h1 class="font-judul text-3xl font-bold tracking-tight text-white">Buat akun</h1>
+    <p class="mt-1 text-sm text-slate-400">
         Isi profil akademikmu supaya kami bisa menghitung kecocokanmu dengan setiap peluang.
     </p>
 
@@ -44,9 +44,9 @@
 
         <x-tombol class="w-full">Daftar</x-tombol>
 
-        <p class="text-center text-sm text-slate-500">
+        <p class="text-center text-sm text-slate-400">
             Sudah punya akun?
-            <a href="{{ route('masuk') }}" class="font-medium text-utama-600 hover:underline">Masuk di sini</a>
+            <a href="{{ route('masuk') }}" class="font-medium text-utama-300 hover:underline">Masuk di sini</a>
         </p>
 
     </form>

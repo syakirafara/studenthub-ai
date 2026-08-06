@@ -4,12 +4,12 @@
 
 @section('isi')
 
-<h1 class="text-2xl font-semibold tracking-tight">
+<h1 class="font-judul text-3xl font-bold tracking-tight text-white">
     Halo, {{ auth()->user()->name }}
 </h1>
 
 @if ($profil)
-    <p class="mt-1 text-sm text-slate-500">
+    <p class="mt-1 text-sm text-slate-400">
         {{ $profil->jurusan }} &middot;
         Semester {{ $profil->semester }} &middot;
         {{ $profil->universitas }}
@@ -19,13 +19,13 @@
 {{-- Profil belum lengkap: dorong melengkapi dulu, karena tanpa itu
      skor kecocokan tidak punya bahan apa pun untuk dibandingkan. --}}
 @if ($kelengkapan < 100)
-    <x-kartu class="mt-6 border-waspada-200 bg-waspada-50">
+    <x-kartu class="mt-6 border-waspada-400/30 bg-waspada-500/10">
         <div class="flex flex-wrap items-center justify-between gap-4">
             <div>
-                <p class="text-sm font-medium text-waspada-800">
+                <p class="text-sm font-medium text-waspada-200">
                     Profilmu baru {{ $kelengkapan }}% lengkap
                 </p>
-                <p class="mt-0.5 text-sm text-waspada-700">
+                <p class="mt-0.5 text-sm text-waspada-300">
                     Skor kecocokan hanya seakurat data yang tersedia. Lengkapi minat dan kemampuanmu dulu.
                 </p>
             </div>
@@ -42,10 +42,10 @@
         ['Sudah dinilai AI', $jumlah['dinilai'], null, null],
     ] as [$label, $angka, $tautan, $teksTautan])
         <x-kartu>
-            <p class="text-xs uppercase tracking-wide text-slate-400">{{ $label }}</p>
-            <p class="mt-1 text-3xl font-semibold text-slate-800">{{ $angka }}</p>
+            <p class="text-xs uppercase tracking-wide text-slate-500">{{ $label }}</p>
+            <p class="mt-1 text-3xl font-semibold text-white">{{ $angka }}</p>
             @if ($tautan)
-                <a href="{{ $tautan }}" class="mt-1 inline-block text-sm font-medium text-utama-600 hover:underline">
+                <a href="{{ $tautan }}" class="mt-1 inline-block text-sm font-medium text-utama-300 hover:underline">
                     {{ $teksTautan }} &rarr;
                 </a>
             @endif
@@ -55,8 +55,8 @@
 
 {{-- Deadline yang segera berakhir --}}
 @if ($segeraBerakhir->isNotEmpty())
-    <h2 class="mt-10 text-lg font-semibold">Segera berakhir</h2>
-    <p class="mt-1 text-sm text-slate-500">
+    <h2 class="mt-12 font-judul text-xl font-semibold text-white">Segera berakhir</h2>
+    <p class="mt-1 text-sm text-slate-400">
         Dari peluang yang sudah kamu simpan. Yang paling mendesak lebih dulu.
     </p>
 
@@ -65,11 +65,11 @@
             <x-kartu class="flex flex-wrap items-center justify-between gap-4">
                 <div class="min-w-0">
                     <a href="{{ route('peluang.show', $item) }}"
-                       class="font-medium text-slate-900 hover:text-utama-700">
+                       class="font-medium text-white hover:text-utama-200">
                         {{ $item->judul }}
                     </a>
                     @if ($item->penyelenggara)
-                        <p class="text-sm text-slate-500">{{ $item->penyelenggara }}</p>
+                        <p class="text-sm text-slate-400">{{ $item->penyelenggara }}</p>
                     @endif
                 </div>
 
@@ -82,13 +82,13 @@
 @endif
 
 {{-- Rekomendasi berdasarkan skor --}}
-<h2 class="mt-10 text-lg font-semibold">Paling cocok untukmu</h2>
+<h2 class="mt-12 font-judul text-xl font-semibold text-white">Paling cocok untukmu</h2>
 
 @if ($rekomendasi->isEmpty())
 
     <x-kartu class="mt-4 border-dashed p-10 text-center">
-        <p class="text-sm font-medium text-slate-700">Belum ada peluang yang dinilai</p>
-        <p class="mx-auto mt-1 max-w-md text-sm text-slate-500">
+        <p class="text-sm font-medium text-slate-200">Belum ada peluang yang dinilai</p>
+        <p class="mx-auto mt-1 max-w-md text-sm text-slate-400">
             Buka satu peluang di katalog, lalu tekan <strong>Hitung kecocokan</strong>.
             AI akan membandingkan syaratnya dengan profilmu, dan hasilnya muncul di sini
             diurutkan dari yang paling cocok.
@@ -100,7 +100,7 @@
 
 @else
 
-    <p class="mt-1 text-sm text-slate-500">
+    <p class="mt-1 text-sm text-slate-400">
         Diurutkan dari skor tertinggi, hanya yang pendaftarannya masih dibuka.
     </p>
 
@@ -112,9 +112,9 @@
         @endforeach
     </div>
 
-    <p class="mt-4 text-sm text-slate-500">
+    <p class="mt-4 text-sm text-slate-400">
         Belum semua peluang dinilai.
-        <a href="{{ route('peluang.index') }}" class="font-medium text-utama-600 hover:underline">
+        <a href="{{ route('peluang.index') }}" class="font-medium text-utama-300 hover:underline">
             Jelajahi katalog
         </a>
         untuk menghitung kecocokan peluang lainnya.

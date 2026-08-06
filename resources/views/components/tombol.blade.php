@@ -6,13 +6,15 @@
 
 @php
     $gaya = match ($jenis) {
-        'kedua'  => 'border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 focus:ring-slate-400',
-        'bahaya' => 'bg-bahaya-600 text-white hover:bg-bahaya-700 focus:ring-bahaya-600',
-        default  => 'bg-utama-600 text-white hover:bg-utama-700 focus:ring-utama-600',
+        'kedua' => 'tombol-hantu',
+        'bahaya' => 'border border-bahaya-500/40 bg-bahaya-600/90 text-white transition-transform '
+                    .'duration-300 hover:-translate-y-0.5 hover:bg-bahaya-600',
+        default => 'tombol-emas',
     };
 
-    $kelas = 'inline-block rounded-md px-4 py-2.5 text-center text-sm font-medium '
-        . 'focus:outline-none focus:ring-2 focus:ring-offset-2 ' . $gaya;
+    $kelas = 'inline-flex items-center justify-center gap-2 rounded-xl px-5 py-2.5 '
+        .'text-sm font-semibold tracking-tight focus:outline-none '
+        .'disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0 '.$gaya;
 @endphp
 
 @if ($href)

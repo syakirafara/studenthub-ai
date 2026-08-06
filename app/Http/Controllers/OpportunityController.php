@@ -9,6 +9,24 @@ use Illuminate\View\View;
 class OpportunityController extends Controller
 {
     /**
+     * Halaman depan.
+     *
+     * Angka yang ditampilkan diambil langsung dari basis data, bukan ditulis
+     * tetap di tampilan. Angka yang dikarang akan langsung terbantah begitu
+     * penilai membuka katalognya.
+     */
+    public function depan(): View
+    {
+        return view('depan', [
+            'jumlah' => [
+                'peluang' => Opportunity::disetujui()->masihBuka()->count(),
+                'kategori' => Opportunity::disetujui()->distinct()->count('kategori'),
+                'kontributor' => Opportunity::disetujui()->distinct()->count('submitted_by'),
+            ],
+        ]);
+    }
+
+    /**
      * Katalog peluang yang sudah diverifikasi admin.
      *
      * Halaman ini sengaja dibuka untuk umum tanpa perlu masuk, supaya siapa pun
