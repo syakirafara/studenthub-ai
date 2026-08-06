@@ -6,7 +6,7 @@
 
 ---
 
-## Naskah utama — 148 kata
+## Naskah utama — 137 kata
 
 **StudentHub AI — semua peluang mahasiswa dalam satu tempat**
 
@@ -20,7 +20,7 @@ Dibangun dengan Laravel 13, MySQL, dan Google Gemini.
 
 ---
 
-## Cadangan pendek — 97 kata
+## Cadangan pendek — 94 kata
 
 *(bila format PDF menuntut lebih ringkas)*
 
