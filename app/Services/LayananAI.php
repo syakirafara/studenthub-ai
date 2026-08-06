@@ -58,6 +58,12 @@ class LayananAI
         - Kalau sebuah keterangan tidak ada di poster, isi null (atau daftar kosong).
         - deadline: format YYYY-MM-DD. Kalau posternya hanya menulis "31 Agustus"
           tanpa tahun, gunakan tahun berjalan. Kalau tidak ada tanggal sama sekali, null.
+        - deadline bila ada beberapa gelombang pendaftaran: ambil tanggal PENUTUPAN
+          GELOMBANG TERAKHIR, karena itulah kesempatan terakhir seseorang bisa mendaftar.
+          Jangan mengosongkannya hanya karena tanggalnya lebih dari satu.
+        - link: tulis alamat lengkap beserta https://. Poster sering menulis
+          "contoh.or.id" saja -- ubah menjadi "https://contoh.or.id". Kalau yang
+          tertera hanya nama akun media sosial, bukan alamat situs, isi null.
         - syarat.jurusan: daftar kosong berarti semua jurusan boleh ikut.
         - syarat.ukuran_tim: 1 berarti perorangan.
         - nominal_biaya: angka rupiah tanpa titik. Kosongkan kalau gratis.
