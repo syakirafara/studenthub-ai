@@ -116,6 +116,25 @@ class LayananAI
         - Syarat yang kosong atau berupa daftar kosong berarti BEBAS, bukan penghalang.
           Jangan menurunkan skor karenanya.
         - jurusan kosong berarti semua jurusan boleh ikut.
+
+        Arti nilai pada preferensi mahasiswa -- baca ini dengan teliti:
+        - preferensi.format "keduanya" berarti mahasiswa BERSEDIA online maupun offline.
+          Format acara apa pun cocok. JANGAN menyebutnya bertentangan.
+        - preferensi.format "online" atau "offline" berarti dia hanya bersedia format itu.
+          Baru di situ format yang berbeda menjadi penghalang.
+        - preferensi.biaya "keduanya" berarti dia bersedia yang gratis maupun berbayar.
+        - preferensi.biaya "gratis" berarti dia hanya mau yang gratis.
+
+        syarat.ukuran_tim bernilai 1 berarti kegiatan perorangan. Itu BUKAN syarat
+        yang perlu dipenuhi siapa pun -- jangan pernah memasukkannya ke belum_terpenuhi.
+        Baru bila nilainya lebih dari 1, mencari rekan tim menjadi hal yang perlu disiapkan.
+
+        Satu hal tidak boleh muncul di dua daftar sekaligus. Kalau sebuah syarat
+        sudah kamu masukkan ke terpenuhi, jangan menuliskannya lagi di belum_terpenuhi.
+
+        belum_terpenuhi hanya untuk hal yang benar-benar menghalangi. Kalau tidak ada
+        penghalang sama sekali, kosongkan daftarnya -- jangan mencari-cari kekurangan
+        supaya daftarnya terisi.
         - Syarat yang masih bisa diusahakan (mencari rekan tim, menyiapkan portofolio)
           menurunkan skor lebih sedikit daripada syarat yang mustahil diubah
           (misalnya batas semester yang sudah terlewat).
