@@ -81,7 +81,7 @@
 
         <h2 class="mt-10 font-judul text-xl font-semibold text-white">Syarat peserta</h2>
 
-        <dl class="mt-3 divide-y divide-white/8 overflow-hidden rounded-xl border border-white/8 bg-white/5">
+        <dl class="kaca kaca-tepi mt-3 divide-y divide-white/8 overflow-hidden rounded-2xl shadow-naik">
 
             <div class="flex gap-4 px-4 py-3">
                 <dt class="w-28 shrink-0 text-sm text-slate-400">Jurusan</dt>
@@ -232,7 +232,7 @@
             @if ($skor)
                 <x-kartu-skor :skor="$skor" class="mt-4" />
             @elseif ($peluang->status === 'disetujui')
-                <x-kartu class="mt-4 space-y-3">
+                <x-kartu datar class="mt-4 space-y-3">
                     <div>
                         <p class="text-sm font-medium text-slate-200">Seberapa cocok denganmu?</p>
                         <p class="mt-1 text-sm text-slate-400">

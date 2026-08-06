@@ -5,17 +5,22 @@
 @section('isi')
 <div class="mx-auto max-w-xl">
 
-    <h1 class="font-judul text-3xl font-bold tracking-tight text-white">Unggah poster</h1>
-    <p class="mt-1 text-sm text-slate-400">
-        Temukan poster lomba, beasiswa, atau magang di Instagram? Unggah di sini.
-        AI akan membacanya untukmu &mdash; kamu tidak perlu mengetik ulang apa pun.
-    </p>
+    <div data-reveal>
+        <p class="text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-utama-300">
+            Dibaca AI
+        </p>
+        <h1 class="mt-1.5 font-judul text-3xl font-bold tracking-tight text-white">Unggah poster</h1>
+        <p class="mt-1.5 text-sm leading-relaxed text-slate-400">
+            Temukan poster lomba, beasiswa, atau magang di Instagram? Unggah di sini.
+            AI akan membacanya untukmu &mdash; kamu tidak perlu mengetik ulang apa pun.
+        </p>
+    </div>
 
     <form method="POST" action="{{ route('unggah.simpan') }}" enctype="multipart/form-data"
-          class="mt-6 space-y-5" data-form-unggah>
+          class="mt-6 space-y-4" data-form-unggah>
         @csrf
 
-        <div>
+        <x-kartu datar data-reveal data-reveal-jeda="80">
             <label for="poster" class="block text-sm font-medium text-slate-200">Berkas poster</label>
 
             <input id="poster" name="poster" type="file" required
@@ -30,22 +35,41 @@
             @error('poster')
                 <p id="poster-error" class="mt-1 text-sm text-bahaya-300">{{ $message }}</p>
             @enderror
-        </div>
+        </x-kartu>
 
-        <x-kartu class="bg-white/4 p-4">
-            <p class="text-sm font-medium text-slate-200">Yang terjadi setelah kamu kirim</p>
-            <ol class="mt-2 space-y-1 text-sm text-slate-300">
-                <li>1. Poster diperkecil dulu agar hemat kuota</li>
-                <li>2. AI membaca judul, syarat, deadline, dan biayanya</li>
-                <li>3. Kamu memeriksa hasilnya &mdash; kalau ada yang keliru, bisa dibetulkan</li>
-                <li>4. Admin memverifikasi sebelum tampil di katalog</li>
+        {{-- jarak="p-5" lewat prop, BUKAN class="p-5".
+             Kelas Tailwind yang bentrok dimenangkan oleh urutan di berkas CSS
+             hasil bangunan, bukan urutan penulisan -- jadi p-6 bawaan komponen
+             akan selalu menang atas p-5 yang ditulis di sini. --}}
+        <x-kartu datar jarak="p-5" data-reveal data-reveal-jeda="140">
+            <p class="text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-slate-500">
+                Yang terjadi setelah kamu kirim
+            </p>
+
+            <ol class="mt-3 space-y-2.5">
+                @foreach ([
+                    'Poster diperkecil dulu agar hemat kuota',
+                    'AI membaca judul, syarat, deadline, dan biayanya',
+                    'Kamu memeriksa hasilnya — kalau ada yang keliru, bisa dibetulkan',
+                    'Admin memverifikasi sebelum tampil di katalog',
+                ] as $nomor => $langkah)
+                    <li class="flex items-start gap-3 text-sm leading-relaxed text-slate-300">
+                        <span aria-hidden="true"
+                              class="mt-px grid h-5 w-5 shrink-0 place-items-center rounded-md
+                                     bg-utama-500/12 text-[0.65rem] font-semibold text-utama-300
+                                     ring-1 ring-inset ring-utama-400/25">{{ $nomor + 1 }}</span>
+                        {{ $langkah }}
+                    </li>
+                @endforeach
             </ol>
-            <p class="mt-3 text-xs text-slate-400">
-                Pembacaan memakan waktu sekitar <strong>10&ndash;20 detik</strong>. Jangan tutup halaman ini.
+
+            <p class="mt-4 border-t border-white/8 pt-3 text-xs text-slate-400">
+                Pembacaan memakan waktu sekitar <strong class="text-slate-300">10&ndash;20 detik</strong>.
+                Jangan tutup halaman ini.
             </p>
         </x-kartu>
 
-        <div class="flex items-center gap-3">
+        <div data-reveal data-reveal-jeda="200" class="flex items-center gap-3 pt-1">
             <x-tombol data-tombol-kirim>Baca dengan AI</x-tombol>
             <x-tombol :href="route('peluang.index')" jenis="kedua">Batal</x-tombol>
         </div>

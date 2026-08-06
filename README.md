@@ -190,6 +190,31 @@ Dua tabel terakhir tidak dibutuhkan untuk menjalankan fitur, tetapi ada dengan s
 
 ---
 
+## Pengujian
+
+```bash
+php artisan test
+```
+
+**37 pengujian, 70 pemeriksaan, seluruhnya lolos.** Dijalankan di atas SQLite di memori, sehingga tidak menyentuh basis data pengembangan dan tidak memerlukan penyiapan apa pun.
+
+| Berkas | Yang dijaga |
+|---|---|
+| `tests/Feature/AlurUtamaTest.php` | Alur produk dari ujung ke ujung: katalog, penyaringan, penyimpanan, pendaftaran akun, dan verifikasi admin |
+| `tests/Feature/HalamanTergambarTest.php` | Setiap halaman benar-benar tergambar tanpa galat, termasuk pada keadaan kosong dan keadaan tepi |
+
+Beberapa pengujian sengaja menjaga bug yang **pernah benar-benar terjadi**, supaya tidak kembali diam-diam:
+
+- Peluang tanpa deadline **tidak boleh** hilang dari katalog — penyaring deadline pernah ikut membuang baris yang tanggalnya kosong
+- Kolom `role` **tidak boleh** bisa diisi dari formulir pendaftaran — kalau bisa, siapa pun dapat mengangkat dirinya jadi admin
+- Peluang yang belum disetujui **harus** menolak dengan 404 bagi mahasiswa, tetapi tetap terbuka bagi admin
+- Halaman beranda **harus** tetap tergambar walau akunnya belum punya profil
+- Menyimpan peluang dua kali **tidak boleh** menggandakan baris
+
+> Pengujian di sini bukan untuk mengejar angka cakupan, melainkan untuk mengunci perilaku yang sudah terbukti pernah salah. Setiap pengujian yang menjaga bug lama diberi komentar yang menerangkan bug apa yang dijaganya.
+
+---
+
 ## Keputusan teknis yang perlu diketahui
 
 | Keputusan | Alasannya |

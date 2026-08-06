@@ -54,7 +54,7 @@
 
     {{-- Poster --}}
     <div class="lg:col-span-2">
-        <x-kartu class="sticky top-6 p-3">
+        <x-kartu datar jarak="p-3" class="sticky top-24">
             @if ($peluang->poster_path)
                 <img src="{{ Storage::url($peluang->poster_path) }}"
                      alt="Poster {{ $peluang->judul }}" class="w-full rounded-lg">
@@ -162,7 +162,7 @@
                 @error('deskripsi') <p class="mt-1 text-sm text-bahaya-300">{{ $message }}</p> @enderror
             </div>
 
-            <x-kartu class="bg-white/4 p-4">
+            <x-kartu datar jarak="p-4">
                 <p class="text-sm font-medium text-slate-200">Syarat hasil bacaan AI</p>
                 <pre class="mt-2 overflow-x-auto rounded bg-white/5 p-3 text-xs text-slate-200">{{ json_encode($peluang->syarat, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) }}</pre>
                 <p class="mt-2 text-xs text-slate-400">

@@ -183,7 +183,7 @@
 
         {{-- Pratinjau kartu skor --}}
         <div data-reveal data-reveal-jeda="140" class="relative">
-            <div class="gumpalan -right-10 top-10 h-64 w-64 bg-utama-500/120/22"></div>
+            <div class="gumpalan -right-10 top-10 h-64 w-64 bg-utama-500/22"></div>
 
             <x-kartu data-tilt="7" class="relative mengambang space-y-5">
                 <div>
@@ -215,7 +215,7 @@
                     </p>
                 </div>
 
-                <div class="rounded-xl border border-white/8 bg-white/5/4 p-4">
+                <div class="rounded-xl border border-utama-400/20 bg-utama-500/8 p-4">
                     <p class="text-xs font-medium uppercase tracking-[0.16em] text-utama-200">Saran</p>
                     <p class="mt-1.5 text-sm leading-relaxed text-slate-300">
                         Ajak dua rekan satu jurusan, dan gunakan tugas kuliahmu sebagai portofolio.

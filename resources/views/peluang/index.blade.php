@@ -10,15 +10,20 @@
                    focus:border-utama-400 focus:bg-white/8 focus:outline-none focus:ring-1 focus:ring-utama-500/30';
 @endphp
 
-<div>
-    <h1 class="font-judul text-3xl font-bold tracking-tight text-white">Katalog peluang</h1>
-    <p class="mt-1 text-sm text-slate-400">
-        Lomba, beasiswa, dan magang yang sudah diverifikasi admin.
+<div data-reveal>
+    <p class="text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-utama-300">
+        Sudah diverifikasi admin
+    </p>
+    <h1 class="mt-1.5 font-judul text-3xl font-bold tracking-tight text-white">Katalog peluang</h1>
+    <p class="mt-1.5 text-sm text-slate-400">
+        Lomba, beasiswa, dan magang yang dikumpulkan mahasiswa, dibaca AI, lalu diperiksa manusia.
     </p>
 </div>
 
-<form method="GET" action="{{ route('peluang.index') }}"
-      class="mt-6 rounded-xl border border-white/8 bg-white/5 p-4">
+{{-- Memakai kelas kaca langsung, bukan komponen x-kartu, karena komponen itu
+     selalu menghasilkan <div> sedangkan yang dibutuhkan di sini <form>. --}}
+<form method="GET" action="{{ route('peluang.index') }}" data-reveal
+      class="kaca kaca-tepi relative mt-6 overflow-hidden rounded-2xl p-5 shadow-naik">
 
     <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
 
@@ -86,24 +91,40 @@
     </div>
 </form>
 
-<p class="mt-6 text-sm text-slate-400">
-    <strong class="text-slate-200">{{ $peluang->total() }}</strong> peluang ditemukan
+<p data-reveal class="mt-6 text-sm text-slate-400">
+    <strong class="font-judul text-base font-bold text-white tabular-nums">{{ $peluang->total() }}</strong>
+    peluang ditemukan
 </p>
 
 @if ($peluang->isEmpty())
 
-    <x-kartu class="mt-4 border-dashed p-10 text-center">
-        <p class="text-sm font-medium text-slate-200">Tidak ada peluang yang cocok</p>
-        <p class="mt-1 text-sm text-slate-400">
-            Coba longgarkan penyaringnya, atau centang "Tampilkan yang sudah berakhir".
+    <x-kartu datar jarak="p-10" data-reveal class="mt-4 border-dashed border-white/15 text-center">
+        <span aria-hidden="true"
+              class="mx-auto grid h-12 w-12 place-items-center rounded-2xl bg-white/5
+                     text-slate-500 ring-1 ring-inset ring-white/10">
+            <svg viewBox="0 0 24 24" class="h-6 w-6" fill="currentColor">
+                <path d="M11 2a9 9 0 1 0 5.6 16.1l4.1 4.2 1.4-1.4-4.2-4.1A9 9 0 0 0 11 2Zm0 2a7 7 0 1 1 0 14 7 7 0 0 1 0-14Z"/>
+            </svg>
+        </span>
+
+        <p class="mt-4 font-judul text-lg font-semibold text-white">Tidak ada peluang yang cocok</p>
+        <p class="mx-auto mt-2 max-w-md text-sm leading-relaxed text-slate-400">
+            Coba longgarkan penyaringnya, atau centang
+            <strong class="text-slate-200">Tampilkan yang sudah berakhir</strong>.
         </p>
+
+        <div class="mt-5">
+            <x-tombol :href="route('peluang.index')" jenis="kedua">Reset penyaring</x-tombol>
+        </div>
     </x-kartu>
 
 @else
 
-    <div class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <div data-reveal-grup class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         @foreach ($peluang as $item)
-            <x-kartu-peluang :peluang="$item" :tersimpan="$idTersimpan->contains($item->id)" />
+            <div data-reveal-anak class="h-full">
+                <x-kartu-peluang :peluang="$item" :tersimpan="$idTersimpan->contains($item->id)" />
+            </div>
         @endforeach
     </div>
 

@@ -20,7 +20,7 @@
 
         {{-- Poster --}}
         <div class="lg:col-span-2">
-            <x-kartu class="p-3">
+            <x-kartu datar jarak="p-3">
                 @if ($peluang->poster_path)
                     <img src="{{ Storage::url($peluang->poster_path) }}"
                          alt="Poster {{ $peluang->judul }}"
@@ -33,7 +33,7 @@
 
         {{-- Hasil bacaan --}}
         <div class="lg:col-span-3">
-            <x-kartu class="p-0">
+            <x-kartu datar jarak="">
                 <dl class="divide-y divide-white/8">
 
                     @foreach ([
@@ -88,7 +88,7 @@
                 </dl>
             </x-kartu>
 
-            <x-kartu class="mt-4 border-waspada-400/30 bg-waspada-500/10">
+            <x-kartu datar class="mt-4 border-waspada-400/30 bg-waspada-500/10">
                 <p class="text-sm font-medium text-waspada-200">Ada yang keliru atau kosong?</p>
                 <p class="mt-1 text-sm text-waspada-300">
                     Wajar &mdash; poster sering tidak mencantumkan semuanya, dan tulisan kecil kadang

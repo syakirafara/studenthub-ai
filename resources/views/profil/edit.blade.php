@@ -9,45 +9,60 @@
     $minatTerpilih = old('minat', $profil->minat ?? []);
     $skillTerpilih = old('skill', $profil->skill ?? []);
     $preferensi = old('preferensi', $profil->preferensi ?? []);
+
+    $penuh = $kelengkapan === 100;
+
+    // Kelas kotak pilihan dipakai di dua tempat -- ditaruh di peubah supaya
+    // kalau gayanya berubah, tidak ada satu pun yang tertinggal.
+    $kotakPilihan = 'flex cursor-pointer items-center gap-3 rounded-xl border border-white/8
+                     bg-white/5 px-3.5 py-2.5 text-sm text-slate-200 transition-all duration-300
+                     hover:border-utama-400/40 hover:bg-white/8
+                     has-[:checked]:border-utama-500/60 has-[:checked]:bg-utama-500/12
+                     has-[:checked]:text-utama-100';
 @endphp
 
 <div class="mx-auto max-w-2xl">
 
-    <h1 class="font-judul text-3xl font-bold tracking-tight text-white">Profil saya</h1>
-    <p class="mt-1 text-sm text-slate-400">
-        Makin lengkap profilmu, makin akurat skor kecocokan yang kami hitung.
-    </p>
+    <div data-reveal>
+        <h1 class="font-judul text-3xl font-bold tracking-tight text-white">Profil saya</h1>
+        <p class="mt-1.5 text-sm text-slate-400">
+            Makin lengkap profilmu, makin akurat skor kecocokan yang dihitung AI.
+        </p>
+    </div>
 
-    {{-- Penanda kelengkapan --}}
-    <div class="mt-6 rounded-xl border border-white/8 bg-white/5 p-4">
-        <div class="flex items-center justify-between text-sm">
+    {{-- ---------- Penanda kelengkapan ---------- --}}
+    <x-kartu datar data-reveal data-reveal-jeda="80" class="mt-6">
+        <div class="flex items-center justify-between gap-3 text-sm">
             <span class="font-medium text-slate-200">Kelengkapan profil</span>
-            <span class="font-semibold {{ $kelengkapan === 100 ? 'text-sukses-300' : 'text-slate-200' }}">
+            <span class="font-judul text-lg font-bold {{ $penuh ? 'text-sukses-300' : 'text-utama-300' }}">
                 {{ $kelengkapan }}%
             </span>
         </div>
 
-        <div class="mt-2 h-2 w-full overflow-hidden rounded-full bg-white/8"
+        <div class="mt-2.5 h-2 w-full overflow-hidden rounded-full bg-white/8"
              role="progressbar" aria-valuenow="{{ $kelengkapan }}" aria-valuemin="0" aria-valuemax="100"
              aria-label="Kelengkapan profil">
-            <div class="h-full rounded-full transition-all {{ $kelengkapan === 100 ? 'bg-sukses-500' : 'bg-utama-500' }}"
-                 style="width: {{ $kelengkapan }}%"></div>
+            <div data-batang="{{ $kelengkapan }}"
+                 class="h-full rounded-full bg-gradient-to-r
+                        {{ $penuh ? 'from-sukses-600 to-sukses-400' : 'from-utama-600 to-utama-400' }}"></div>
         </div>
 
-        @if ($kelengkapan < 100)
-            <p class="mt-2 text-xs text-slate-400">
+        <p class="mt-2.5 text-xs leading-relaxed {{ $penuh ? 'text-sukses-300' : 'text-slate-400' }}">
+            @if ($penuh)
+                Profilmu sudah lengkap. Skor kecocokan akan dihitung dengan data paling utuh.
+            @else
                 Lengkapi minat, kemampuan, dan preferensimu supaya rekomendasi lebih tepat sasaran.
-            </p>
-        @endif
-    </div>
+            @endif
+        </p>
+    </x-kartu>
 
-    <form method="POST" action="{{ route('profil.update') }}" class="mt-6 space-y-8">
+    <form method="POST" action="{{ route('profil.update') }}" class="mt-4 space-y-4">
         @csrf
         @method('PUT')
 
-        {{-- Data akademik --}}
-        <section class="space-y-5">
-            <h2 class="font-judul text-xl font-semibold text-white">Data akademik</h2>
+        {{-- ---------- Data akademik ---------- --}}
+        <x-kartu datar data-reveal data-reveal-jeda="140" class="space-y-5">
+            <h2 class="font-judul text-lg font-semibold text-white">Data akademik</h2>
 
             <x-isian name="universitas" label="Universitas"
                      :value="$profil->universitas ?? ''" required autocomplete="organization" />
@@ -71,78 +86,91 @@
                     </option>
                 @endfor
             </x-pilihan>
-        </section>
+        </x-kartu>
 
-        {{-- Minat --}}
-        <section>
-            <div class="flex items-baseline justify-between">
-                <h2 class="font-judul text-xl font-semibold text-white">Minat</h2>
-                <span class="text-xs text-slate-400">pilih maksimal 3</span>
+        {{-- ---------- Minat ---------- --}}
+        <x-kartu datar data-reveal data-reveal-jeda="200">
+            <div class="flex items-baseline justify-between gap-3">
+                <h2 class="font-judul text-lg font-semibold text-white">Minat</h2>
+                <span class="shrink-0 rounded-md bg-white/6 px-2 py-0.5 text-[0.68rem] text-slate-400">
+                    maksimal 3
+                </span>
             </div>
-            <p class="mt-1 text-sm text-slate-400">
+
+            <p class="mt-1.5 text-sm leading-relaxed text-slate-400">
                 Bidang yang paling kamu incar. Ini yang dipakai untuk menyaring rekomendasi.
             </p>
 
-            <div class="mt-3 grid gap-2 sm:grid-cols-2">
+            <div class="mt-4 grid gap-2 sm:grid-cols-2">
                 @foreach (App\Models\Profile::MINAT as $nilai => $teks)
-                    <label class="flex cursor-pointer items-center gap-3 rounded-lg border border-white/8 bg-white/5 px-3 py-2.5 text-sm transition hover:border-utama-400/40 has-[:checked]:border-utama-600 has-[:checked]:bg-utama-500/12">
+                    <label class="{{ $kotakPilihan }}">
                         <input type="checkbox" name="minat[]" value="{{ $nilai }}"
                                @checked(in_array($nilai, $minatTerpilih))
-                               class="rounded border-white/12 text-utama-300 focus:ring-utama-500/30">
+                               class="h-4 w-4 shrink-0 cursor-pointer rounded border-white/20">
                         {{ $teks }}
                     </label>
                 @endforeach
             </div>
 
             @error('minat')
-                <p class="mt-2 text-sm text-bahaya-300">{{ $message }}</p>
+                <p class="mt-3 text-sm text-bahaya-300">{{ $message }}</p>
             @enderror
-        </section>
+        </x-kartu>
 
-        {{-- Kemampuan --}}
-        <section>
-            <h2 class="font-judul text-xl font-semibold text-white">Kemampuan</h2>
-            <p class="mt-1 text-sm text-slate-400">
+        {{-- ---------- Kemampuan ---------- --}}
+        <x-kartu datar data-reveal data-reveal-jeda="260">
+            <h2 class="font-judul text-lg font-semibold text-white">Kemampuan</h2>
+
+            <p class="mt-1.5 text-sm leading-relaxed text-slate-400">
                 Yang sudah kamu kuasai, walau baru dasar. Dipakai untuk menilai apakah kamu memenuhi syarat.
             </p>
 
-            <div class="mt-3 grid gap-2 sm:grid-cols-2">
+            <div class="mt-4 grid gap-2 sm:grid-cols-2">
                 @foreach (App\Models\Profile::SKILL as $nilai => $teks)
-                    <label class="flex cursor-pointer items-center gap-3 rounded-lg border border-white/8 bg-white/5 px-3 py-2.5 text-sm transition hover:border-utama-400/40 has-[:checked]:border-utama-600 has-[:checked]:bg-utama-500/12">
+                    <label class="{{ $kotakPilihan }}">
                         <input type="checkbox" name="skill[]" value="{{ $nilai }}"
                                @checked(in_array($nilai, $skillTerpilih))
-                               class="rounded border-white/12 text-utama-300 focus:ring-utama-500/30">
+                               class="h-4 w-4 shrink-0 cursor-pointer rounded border-white/20">
                         {{ $teks }}
                     </label>
                 @endforeach
             </div>
 
             @error('skill')
-                <p class="mt-2 text-sm text-bahaya-300">{{ $message }}</p>
+                <p class="mt-3 text-sm text-bahaya-300">{{ $message }}</p>
             @enderror
-        </section>
+        </x-kartu>
 
-        {{-- Preferensi --}}
-        <section class="space-y-5">
+        {{-- ---------- Preferensi ---------- --}}
+        <x-kartu datar data-reveal data-reveal-jeda="320" class="space-y-5">
             <div>
-                <h2 class="font-judul text-xl font-semibold text-white">Preferensi</h2>
-                <p class="mt-1 text-sm text-slate-400">Supaya kami tidak merekomendasikan yang tidak mungkin kamu ikuti.</p>
+                <h2 class="font-judul text-lg font-semibold text-white">Preferensi</h2>
+                <p class="mt-1.5 text-sm leading-relaxed text-slate-400">
+                    Supaya AI tidak merekomendasikan yang tidak mungkin kamu ikuti.
+                </p>
             </div>
 
             <x-pilihan name="preferensi[format]" label="Format kegiatan" :kosong="null">
-                @foreach (['keduanya' => 'Online maupun offline', 'online' => 'Hanya online', 'offline' => 'Hanya offline'] as $nilai => $teks)
+                @foreach ([
+                    'keduanya' => 'Online maupun offline',
+                    'online' => 'Hanya online',
+                    'offline' => 'Hanya offline',
+                ] as $nilai => $teks)
                     <option value="{{ $nilai }}" @selected(($preferensi['format'] ?? 'keduanya') === $nilai)>{{ $teks }}</option>
                 @endforeach
             </x-pilihan>
 
             <x-pilihan name="preferensi[biaya]" label="Biaya pendaftaran" :kosong="null">
-                @foreach (['keduanya' => 'Gratis maupun berbayar', 'gratis' => 'Hanya yang gratis'] as $nilai => $teks)
+                @foreach ([
+                    'keduanya' => 'Gratis maupun berbayar',
+                    'gratis' => 'Hanya yang gratis',
+                ] as $nilai => $teks)
                     <option value="{{ $nilai }}" @selected(($preferensi['biaya'] ?? 'keduanya') === $nilai)>{{ $teks }}</option>
                 @endforeach
             </x-pilihan>
-        </section>
+        </x-kartu>
 
-        <div class="flex gap-3 border-t border-white/8 pt-6">
+        <div data-reveal data-reveal-jeda="380" class="flex gap-3 pt-2">
             <x-tombol>Simpan perubahan</x-tombol>
             <x-tombol :href="route('beranda')" jenis="kedua">Batal</x-tombol>
         </div>
