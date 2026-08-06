@@ -64,6 +64,9 @@ class OpportunityController extends Controller
         return view('peluang.show', [
             'peluang' => $peluang,
             'tersimpan' => $this->idTersimpan($request)->contains($peluang->id),
+            'skor' => $request->user()
+                ? $peluang->matches()->where('user_id', $request->user()->id)->first()
+                : null,
         ]);
     }
 

@@ -80,6 +80,75 @@ class LayananAI
     }
 
     /**
+     * Bentuk hasil penilaian kecocokan.
+     */
+    private const SKEMA_KECOCOKAN = [
+        'type' => 'OBJECT',
+        'properties' => [
+            'skor' => ['type' => 'INTEGER'],
+            'terpenuhi' => ['type' => 'ARRAY', 'items' => ['type' => 'STRING']],
+            'belum_terpenuhi' => ['type' => 'ARRAY', 'items' => ['type' => 'STRING']],
+            'saran' => ['type' => 'STRING'],
+        ],
+        'required' => ['skor', 'terpenuhi', 'belum_terpenuhi', 'saran'],
+    ];
+
+    /**
+     * Menilai seberapa cocok satu mahasiswa dengan satu peluang.
+     *
+     * Memakai model ringan: tugasnya membandingkan teks dengan teks, jauh
+     * lebih sederhana daripada membaca gambar. Dua kali lebih cepat, dan
+     * hemat kuota harian.
+     */
+    public function hitungKecocokan(array $profil, array $syarat, ?int $userId = null): array
+    {
+        $petunjuk = <<<TEKS
+        Nilai seberapa cocok seorang mahasiswa dengan syarat sebuah peluang.
+
+        PROFIL MAHASISWA:
+        {$this->keJson($profil)}
+
+        SYARAT PELUANG:
+        {$this->keJson($syarat)}
+
+        Aturan penilaian:
+        - skor 0-100. Semakin banyak syarat terpenuhi, semakin tinggi.
+        - Syarat yang kosong atau berupa daftar kosong berarti BEBAS, bukan penghalang.
+          Jangan menurunkan skor karenanya.
+        - jurusan kosong berarti semua jurusan boleh ikut.
+        - Syarat yang masih bisa diusahakan (mencari rekan tim, menyiapkan portofolio)
+          menurunkan skor lebih sedikit daripada syarat yang mustahil diubah
+          (misalnya batas semester yang sudah terlewat).
+        - terpenuhi: alasan singkat, maksimal 6 butir. Contoh: "Jurusan sesuai".
+        - belum_terpenuhi: hal yang belum dipenuhi, maksimal 4 butir. Kosongkan bila semua terpenuhi.
+        - saran: satu atau dua kalimat, Bahasa Indonesia, langsung bisa dikerjakan.
+          Kalau semua terpenuhi, dorong dia mendaftar.
+
+        Jawab jujur. Jangan mengatrol skor supaya terdengar menyenangkan --
+        skor yang terlalu murah hati membuat mahasiswa mendaftar lalu tersingkir
+        di tahap administrasi, dan itu lebih merugikan daripada skor rendah yang jujur.
+        TEKS;
+
+        $hasil = $this->panggil(
+            jenis: 'skor_kecocokan',
+            model: config('services.gemini.ringan'),
+            bagian: [['text' => $petunjuk]],
+            skema: self::SKEMA_KECOCOKAN,
+            userId: $userId,
+        );
+
+        // Jaring pengaman: skor di luar 0-100 dipaksa masuk rentang.
+        $hasil['skor'] = max(0, min(100, (int) ($hasil['skor'] ?? 0)));
+
+        return $hasil;
+    }
+
+    private function keJson(array $data): string
+    {
+        return json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    }
+
+    /**
      * Satu-satunya pintu keluar menuju layanan AI.
      *
      * Semua pemanggilan lewat sini, supaya pencatatan token, durasi, dan

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\KecocokanController;
 use App\Http\Controllers\OpportunityController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SavedItemController;
@@ -45,6 +46,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/profil', [ProfileController::class, 'edit'])->name('profil.edit');
     Route::put('/profil', [ProfileController::class, 'update'])->name('profil.update');
+
+    Route::post('/peluang/{peluang}/kecocokan', [KecocokanController::class, 'hitung'])->name('kecocokan.hitung');
 
     Route::get('/unggah', [UnggahPosterController::class, 'create'])->name('unggah.buat');
     Route::post('/unggah', [UnggahPosterController::class, 'store'])->name('unggah.simpan');

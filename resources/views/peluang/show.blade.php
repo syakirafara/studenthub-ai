@@ -157,8 +157,46 @@
             @endguest
 
         </x-kartu>
+
+        @auth
+            @if ($skor)
+                <x-kartu-skor :skor="$skor" class="mt-4" />
+            @elseif ($peluang->status === 'disetujui')
+                <x-kartu class="mt-4 space-y-3">
+                    <div>
+                        <p class="text-sm font-medium text-slate-700">Seberapa cocok denganmu?</p>
+                        <p class="mt-1 text-sm text-slate-500">
+                            AI akan membandingkan syarat peluang ini dengan jurusan, semester,
+                            minat, dan kemampuanmu.
+                        </p>
+                    </div>
+
+                    <form method="POST" action="{{ route('kecocokan.hitung', $peluang) }}" data-form-skor>
+                        @csrf
+                        <x-tombol class="w-full" data-tombol-skor>Hitung kecocokan</x-tombol>
+                    </form>
+
+                    <p class="text-xs text-slate-400">Sekitar 2 detik. Hasilnya disimpan, jadi tidak dihitung dua kali.</p>
+                </x-kartu>
+            @endif
+        @endauth
     </aside>
 
 </div>
+
+@push('skrip')
+<script>
+    // Perhitungan makan sekitar 2 detik. Tanpa penanda, tombolnya mudah
+    // ditekan berulang -- dan tiap tekanan berarti satu panggilan AI lagi.
+    document.querySelector('[data-form-skor]')?.addEventListener('submit', (e) => {
+        const tombol = e.currentTarget.querySelector('[data-tombol-skor]');
+        if (tombol) {
+            tombol.disabled = true;
+            tombol.textContent = 'Sedang menghitung...';
+            tombol.classList.add('cursor-not-allowed', 'opacity-60');
+        }
+    });
+</script>
+@endpush
 
 @endsection
