@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminPeluangController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\KecocokanController;
 use App\Http\Controllers\OpportunityController;
@@ -64,6 +65,9 @@ Route::middleware('auth')->group(function () {
     */
 
     Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
-        Route::view('/', 'admin.dasbor')->name('dasbor');
+        Route::get('/', [AdminPeluangController::class, 'dasbor'])->name('dasbor');
+        Route::get('/peluang/{peluang}', [AdminPeluangController::class, 'periksa'])->name('periksa');
+        Route::put('/peluang/{peluang}/setujui', [AdminPeluangController::class, 'setujui'])->name('setujui');
+        Route::put('/peluang/{peluang}/tolak', [AdminPeluangController::class, 'tolak'])->name('tolak');
     });
 });

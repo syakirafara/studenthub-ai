@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 
 class Opportunity extends Model
 {
@@ -57,6 +58,39 @@ class Opportunity extends Model
             $q->whereNull('deadline')
                 ->orWhereDate('deadline', '>=', now());
         });
+    }
+
+    /**
+     * Peluang lain yang judulnya mirip dengan peluang ini.
+     *
+     * Menjawab temuan riset tema nomor 5: "banyak akun mengunggah informasi
+     * yang sama sehingga malah membingungkan". Karena siapa pun boleh
+     * mengunggah, satu lomba bisa masuk berkali-kali dari orang berbeda.
+     *
+     * Perbandingan dilakukan di PHP, bukan di database, karena MySQL tidak
+     * menyediakan pembanding kemiripan teks bawaan. Untuk ratusan baris ini
+     * masih ringan; bila data mencapai puluhan ribu, langkah berikutnya
+     * adalah indeks pencarian teks penuh.
+     */
+    public function kemungkinanDuplikat(int $batasPersen = 65): Collection
+    {
+        $bersihkan = fn (string $teks) => preg_replace('/[^a-z0-9 ]/', '', mb_strtolower($teks));
+        $judulIni = $bersihkan($this->judul);
+
+        return static::query()
+            ->where('id', '!=', $this->id)
+            ->where('kategori', $this->kategori)
+            ->whereIn('status', ['disetujui', 'menunggu'])
+            ->get(['id', 'judul', 'penyelenggara', 'status', 'deadline'])
+            ->map(function (self $lain) use ($bersihkan, $judulIni) {
+                similar_text($judulIni, $bersihkan($lain->judul), $persen);
+                $lain->setAttribute('kemiripan', (int) round($persen));
+
+                return $lain;
+            })
+            ->filter(fn (self $lain) => $lain->getAttribute('kemiripan') >= $batasPersen)
+            ->sortByDesc(fn (self $lain) => $lain->getAttribute('kemiripan'))
+            ->values();
     }
 
     /**
