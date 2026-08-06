@@ -168,7 +168,13 @@ npm run dev            # terminal 2
 
 Buka `http://127.0.0.1:8000`, lalu masuk dengan akun demo di atas.
 
-Data contoh berisi **15 pengguna**, **19 peluang** dengan sebaran deadline dan status yang beragam, **45 simpanan**, dan **79 skor kecocokan** — sehingga seluruh halaman langsung terisi tanpa perlu memasukkan data manual.
+Data contoh berisi **15 pengguna**, **19 peluang** dengan sebaran deadline dan status yang beragam, **46 simpanan**, dan **79 skor kecocokan** — sehingga seluruh halaman langsung terisi tanpa perlu memasukkan data manual.
+
+Untuk memastikan semuanya berjalan sebagaimana mestinya:
+
+```bash
+php artisan test
+```
 
 ---
 
