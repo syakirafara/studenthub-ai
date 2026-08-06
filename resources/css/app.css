@@ -62,6 +62,7 @@
     --color-sukses-50: #ecfdf5;
     --color-sukses-100: #d1fae5;
     --color-sukses-200: #6ee7b7;
+    --color-sukses-300: #4ade9f;
     --color-sukses-400: #34d399;
     --color-sukses-500: #10b981;
     --color-sukses-600: #059669;
@@ -71,6 +72,7 @@
     --color-bahaya-50: #fef2f2;
     --color-bahaya-100: #fee2e2;
     --color-bahaya-200: #fca5a5;
+    --color-bahaya-300: #fb8c8c;
     --color-bahaya-400: #f87171;
     --color-bahaya-500: #ef4444;
     --color-bahaya-600: #dc2626;
@@ -80,14 +82,18 @@
     --color-waspada-50: #fffbeb;
     --color-waspada-100: #fef3c7;
     --color-waspada-200: #fcd34d;
+    --color-waspada-300: #fcca38;
     --color-waspada-400: #fbbf24;
     --color-waspada-500: #f59e0b;
     --color-waspada-600: #d97706;
     --color-waspada-700: #b45309;
     --color-waspada-800: #92400e;
 
+    --color-langit-200: #a5e4fd;
+    --color-langit-300: #6dd3fb;
     --color-langit-400: #38bdf8;
     --color-langit-500: #0ea5e9;
+    --color-langit-600: #0284c7;
     --color-nila-500: #2563eb;
 
     /* Skor kecocokan */
@@ -189,14 +195,20 @@
 
     /* -- Kaca ------------------------------------------------------------ */
 
+    /* Dua lapis: gradasi putih tipis di atas, warna gelap pekat di bawah.
+       Lapisan gelap itu yang penting -- tanpanya nilai terang kartu hampir
+       sama dengan latar halaman, dan sekumpulan kartu melebur jadi satu
+       bidang abu-abu alih-alih terbaca sebagai benda-benda terpisah. */
     .kaca {
-        background: linear-gradient(
-            160deg,
-            rgb(255 255 255 / 0.055),
-            rgb(255 255 255 / 0.02) 45%,
-            rgb(255 255 255 / 0.005)
-        );
-        border: 1px solid rgb(255 255 255 / 0.09);
+        background:
+            linear-gradient(
+                160deg,
+                rgb(255 255 255 / 0.06),
+                rgb(255 255 255 / 0.022) 45%,
+                rgb(255 255 255 / 0.006)
+            ),
+            rgb(9 19 34 / 0.55);
+        border: 1px solid rgb(255 255 255 / 0.1);
         backdrop-filter: blur(16px) saturate(140%);
         -webkit-backdrop-filter: blur(16px) saturate(140%);
     }
