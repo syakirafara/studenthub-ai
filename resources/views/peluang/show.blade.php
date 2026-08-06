@@ -21,6 +21,24 @@
     $syarat = $peluang->syarat ?? [];
     $min    = $syarat['semester_min'] ?? null;
     $maks   = $syarat['semester_maks'] ?? null;
+
+    /*
+     | Batang sisa waktu.
+     |
+     | Panjangnya dihitung terhadap jendela 60 hari, lalu MENYUSUT seiring
+     | tenggat mendekat. Arah ini disengaja: batang yang memenuh saat waktu
+     | menipis akan terbaca sebagai "kemajuan", persis kebalikan dari yang
+     | dimaksud. Batang yang menyusut terbaca sebagai persediaan yang habis.
+     */
+    $sisa = $peluang->sisaHari();
+    $persenWaktu = $sisa === null ? null : max(0, min(100, (int) round($sisa / 60 * 100)));
+
+    $rupaWaktu = match ($peluang->statusDeadline()) {
+        'lewat'     => ['teks' => 'text-slate-500',   'batang' => 'from-slate-600 to-slate-500'],
+        'hari_ini'  => ['teks' => 'text-bahaya-300',  'batang' => 'from-bahaya-600 to-bahaya-400'],
+        'mepet'     => ['teks' => 'text-waspada-300', 'batang' => 'from-waspada-600 to-waspada-400'],
+        default     => ['teks' => 'text-sukses-300',  'batang' => 'from-sukses-600 to-sukses-400'],
+    };
 @endphp
 
 <a href="{{ route('peluang.index') }}" class="text-sm text-slate-400 hover:text-utama-300">
@@ -114,47 +132,99 @@
         </dl>
     </div>
 
-    <aside>
-        <x-kartu class="space-y-5">
+    {{-- Panel dibuat menempel saat digulir. Halaman rincian sering panjang, dan
+         tombol daftar tidak boleh ikut hilang ke atas layar. --}}
+    <aside class="lg:sticky lg:top-24 lg:self-start">
+        <x-kartu jarak="" datar>
 
-            <div>
-                <p class="text-xs uppercase tracking-wide text-slate-500">Deadline</p>
-                <p class="mt-1 font-medium text-white">
+            {{-- ---------- Tenggat ---------- --}}
+            <div class="p-5">
+                <p class="flex items-center gap-2 text-[0.68rem] font-semibold uppercase
+                          tracking-[0.14em] text-slate-500">
+                    <svg viewBox="0 0 24 24" class="h-3.5 w-3.5" fill="currentColor" aria-hidden="true">
+                        <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm1 5v5.3l3.6 2.1-.8 1.4-4.3-2.5V7h1.5Z"/>
+                    </svg>
+                    Tenggat pendaftaran
+                </p>
+
+                <p class="mt-2 font-judul text-xl font-bold leading-tight text-white">
                     {{ $peluang->deadline?->translatedFormat('d F Y') ?? 'Tidak disebutkan' }}
                 </p>
-                <p class="text-sm text-slate-400">{{ $peluang->teksDeadline() }}</p>
+
+                @if ($persenWaktu !== null)
+                    <div class="mt-3.5 h-1.5 overflow-hidden rounded-full bg-white/8"
+                         role="img" aria-label="{{ $peluang->teksDeadline() }}">
+                        <div data-batang="{{ $persenWaktu }}"
+                             class="h-full rounded-full bg-gradient-to-r {{ $rupaWaktu['batang'] }}"></div>
+                    </div>
+                @endif
+
+                <p class="mt-2 text-sm font-medium {{ $rupaWaktu['teks'] }}">
+                    {{ $peluang->teksDeadline() }}
+                </p>
             </div>
 
-            <div>
-                <p class="text-xs uppercase tracking-wide text-slate-500">Biaya</p>
-                <p class="mt-1 font-medium text-white">
-                    @if ($peluang->biaya === 'gratis')
-                        Gratis
-                    @elseif ($peluang->biaya === 'berbayar')
-                        Rp {{ number_format($peluang->nominal_biaya ?? 0, 0, ',', '.') }}
-                    @else
+            {{-- ---------- Biaya ---------- --}}
+            <div class="border-t border-white/8 p-5">
+                <p class="flex items-center gap-2 text-[0.68rem] font-semibold uppercase
+                          tracking-[0.14em] text-slate-500">
+                    <svg viewBox="0 0 24 24" class="h-3.5 w-3.5" fill="currentColor" aria-hidden="true">
+                        <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm2.6 6.4-1 1.1a3 3 0 0 0-1.6-.6c-.8 0-1.3.3-1.3.9 0 .5.4.8 1.5 1.1 1.7.5 2.5 1.2 2.5 2.6 0 1.3-.9 2.2-2.2 2.4V17h-1.6v-1.1a4.3 4.3 0 0 1-2.5-1.2l1-1.1c.6.5 1.3.8 2.1.8.9 0 1.4-.4 1.4-1 0-.5-.4-.8-1.6-1.2-1.6-.4-2.4-1.1-2.4-2.5 0-1.2.9-2.1 2.2-2.4V6.2h1.6v1.1c.8.1 1.5.5 1.9 1.1Z"/>
+                    </svg>
+                    Biaya pendaftaran
+                </p>
+
+                @if ($peluang->biaya === 'gratis')
+                    <p class="mt-2 font-judul text-xl font-bold leading-tight text-sukses-300">Gratis</p>
+                @elseif ($peluang->biaya === 'berbayar')
+                    <p class="mt-2 font-judul text-xl font-bold leading-tight text-white">
+                        <span class="text-sm font-medium text-slate-400">Rp</span>
+                        {{ number_format($peluang->nominal_biaya ?? 0, 0, ',', '.') }}
+                    </p>
+                @else
+                    <p class="mt-2 font-judul text-xl font-bold leading-tight text-slate-500">
                         Tidak disebutkan
-                    @endif
-                </p>
+                    </p>
+                @endif
             </div>
 
-            @if ($peluang->link)
-                <x-tombol :href="$peluang->link" class="w-full" target="_blank" rel="noopener noreferrer">
-                    Daftar di situs penyelenggara
-                </x-tombol>
-            @endif
+            {{-- ---------- Aksi ----------
+                 Diberi latar sedikit berbeda supaya terbaca sebagai daerah
+                 tempat menekan, bukan lanjutan daftar keterangan di atasnya. --}}
+            <div class="space-y-3 border-t border-white/8 bg-white/[0.025] p-5">
 
-            @auth
-                <x-tombol-simpan :peluang="$peluang" :tersimpan="$tersimpan" :berlabel="true"
-                                 class="flex justify-center border-t border-white/8 pt-4" />
-            @endauth
+                @if ($peluang->link)
+                    <x-tombol :href="$peluang->link" class="w-full" target="_blank" rel="noopener noreferrer">
+                        Daftar di situs penyelenggara
+                        <svg viewBox="0 0 24 24" class="h-4 w-4 shrink-0" fill="none"
+                             stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                  d="M13.5 4.5h6v6M19.5 4.5 10 14M18 14.5v3a2.5 2.5 0 0 1-2.5 2.5h-9A2.5 2.5 0 0 1 4 17.5v-9A2.5 2.5 0 0 1 6.5 6h3"/>
+                        </svg>
+                    </x-tombol>
+                @endif
 
-            @guest
-                <p class="border-t border-white/8 pt-4 text-xs leading-relaxed text-slate-400">
-                    <a href="{{ route('masuk') }}" class="font-medium text-utama-300 hover:underline">Masuk</a>
-                    untuk melihat seberapa cocok peluang ini dengan profilmu.
-                </p>
-            @endguest
+                @auth
+                    <x-tombol-simpan :peluang="$peluang" :tersimpan="$tersimpan" :berlabel="true"
+                                     class="flex justify-center" />
+                @endauth
+
+                @guest
+                    <p class="flex items-start gap-2.5 rounded-xl bg-utama-500/8 px-3.5 py-3
+                              text-xs leading-relaxed text-slate-300 ring-1 ring-inset ring-utama-400/20">
+                        <svg viewBox="0 0 24 24" class="mt-px h-4 w-4 shrink-0 text-utama-300"
+                             fill="currentColor" aria-hidden="true">
+                            <path d="M12 3c0 4.97 4.03 9 9 9-4.97 0-9 4.03-9 9 0-4.97-4.03-9-9-9 4.97 0 9-4.03 9-9z"/>
+                        </svg>
+                        <span>
+                            <a href="{{ route('masuk') }}"
+                               class="font-semibold text-utama-200 underline-offset-2 hover:underline">Masuk</a>
+                            untuk melihat seberapa cocok peluang ini dengan profilmu.
+                        </span>
+                    </p>
+                @endguest
+
+            </div>
 
         </x-kartu>
 
