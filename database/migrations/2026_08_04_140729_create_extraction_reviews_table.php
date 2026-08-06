@@ -10,27 +10,26 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up(): void
-{
-    Schema::create('extraction_reviews', function (Blueprint $table) {
-        $table->id();
+    {
+        Schema::create('extraction_reviews', function (Blueprint $table) {
+            $table->id();
 
-        $table->foreignId('opportunity_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('opportunity_id')->constrained()->cascadeOnDelete();
 
-        $table->json('hasil_ai');
-        $table->json('hasil_final')->nullable();
-        $table->unsignedTinyInteger('jumlah_koreksi')->default(0);
-        $table->json('field_dikoreksi')->nullable();
+            $table->json('hasil_ai');
+            $table->json('hasil_final')->nullable();
+            $table->unsignedTinyInteger('jumlah_koreksi')->default(0);
+            $table->json('field_dikoreksi')->nullable();
 
-        $table->foreignId('reviewed_by')->nullable()
-            ->constrained('users')->nullOnDelete();
+            $table->foreignId('reviewed_by')->nullable()
+                ->constrained('users')->nullOnDelete();
 
-        $table->timestamps();
-    });
-}
+            $table->timestamps();
+        });
+    }
 
-public function down(): void
-{
-    Schema::dropIfExists('extraction_reviews');
-}
-
+    public function down(): void
+    {
+        Schema::dropIfExists('extraction_reviews');
+    }
 };

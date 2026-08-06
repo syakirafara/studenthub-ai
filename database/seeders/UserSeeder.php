@@ -30,36 +30,36 @@ class UserSeeder extends Seeder
 
         // ---- Akun demo untuk juri: ADMIN ----
         $admin = User::create([
-            'name'     => 'Admin StudentHub',
-            'email'    => 'admin@studenthub.test',
+            'name' => 'Admin StudentHub',
+            'email' => 'admin@studenthub.test',
             'password' => 'password',
-            'role'     => 'admin',
+            'role' => 'admin',
         ]);
 
         $admin->profile()->create([
             'universitas' => 'Universitas Dian Nuswantoro',
-            'jurusan'     => 'Teknik Informatika',
-            'semester'    => 7,
-            'minat'       => ['web', 'data'],
-            'skill'       => ['php', 'javascript'],
-            'preferensi'  => ['format' => 'keduanya', 'biaya' => 'keduanya'],
+            'jurusan' => 'Teknik Informatika',
+            'semester' => 7,
+            'minat' => ['web', 'data'],
+            'skill' => ['php', 'javascript'],
+            'preferensi' => ['format' => 'keduanya', 'biaya' => 'keduanya'],
         ]);
 
         // ---- Akun demo untuk juri: MAHASISWA ----
         $demo = User::create([
-            'name'     => 'Sari Wulandari',
-            'email'    => 'mahasiswa@studenthub.test',
+            'name' => 'Sari Wulandari',
+            'email' => 'mahasiswa@studenthub.test',
             'password' => 'password',
-            'role'     => 'mahasiswa',
+            'role' => 'mahasiswa',
         ]);
 
         $demo->profile()->create([
             'universitas' => 'Universitas Dian Nuswantoro',
-            'jurusan'     => 'Teknik Informatika',
-            'semester'    => 5,
-            'minat'       => ['web', 'ui-ux', 'data'],
-            'skill'       => ['html-css', 'javascript', 'figma'],
-            'preferensi'  => ['format' => 'keduanya', 'biaya' => 'gratis'],
+            'jurusan' => 'Teknik Informatika',
+            'semester' => 5,
+            'minat' => ['web', 'ui-ux', 'data'],
+            'skill' => ['html-css', 'javascript', 'figma'],
+            'preferensi' => ['format' => 'keduanya', 'biaya' => 'gratis'],
         ]);
 
         // ---- 12 mahasiswa lain sebagai kontributor ----
@@ -67,13 +67,13 @@ class UserSeeder extends Seeder
             ->each(function (User $user) use ($universitas, $jurusan, $daftarMinat, $daftarSkill) {
                 $user->profile()->create([
                     'universitas' => fake()->randomElement($universitas),
-                    'jurusan'     => fake()->randomElement($jurusan),
-                    'semester'    => fake()->numberBetween(1, 8),
-                    'minat'       => fake()->randomElements($daftarMinat, 3),
-                    'skill'       => fake()->randomElements($daftarSkill, fake()->numberBetween(2, 4)),
-                    'preferensi'  => [
+                    'jurusan' => fake()->randomElement($jurusan),
+                    'semester' => fake()->numberBetween(1, 8),
+                    'minat' => fake()->randomElements($daftarMinat, 3),
+                    'skill' => fake()->randomElements($daftarSkill, fake()->numberBetween(2, 4)),
+                    'preferensi' => [
                         'format' => fake()->randomElement(['online', 'offline', 'keduanya']),
-                        'biaya'  => fake()->randomElement(['gratis', 'keduanya']),
+                        'biaya' => fake()->randomElement(['gratis', 'keduanya']),
                     ],
                 ]);
             });

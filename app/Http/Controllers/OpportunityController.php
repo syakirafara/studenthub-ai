@@ -17,11 +17,11 @@ class OpportunityController extends Controller
     public function index(Request $request): View
     {
         $filter = $request->validate([
-            'cari'            => ['nullable', 'string', 'max:100'],
-            'kategori'        => ['nullable', 'in:lomba,beasiswa,magang'],
-            'tingkat'         => ['nullable', 'in:kampus,regional,nasional,internasional'],
-            'biaya'           => ['nullable', 'in:gratis,berbayar'],
-            'urut'            => ['nullable', 'in:deadline,terbaru'],
+            'cari' => ['nullable', 'string', 'max:100'],
+            'kategori' => ['nullable', 'in:lomba,beasiswa,magang'],
+            'tingkat' => ['nullable', 'in:kampus,regional,nasional,internasional'],
+            'biaya' => ['nullable', 'in:gratis,berbayar'],
+            'urut' => ['nullable', 'in:deadline,terbaru'],
             'tampilkan_lewat' => ['nullable', 'boolean'],
         ]);
 
@@ -29,7 +29,7 @@ class OpportunityController extends Controller
             ->when($filter['cari'] ?? null, function ($query, $cari) {
                 $query->where(function ($cabang) use ($cari) {
                     $cabang->where('judul', 'like', "%{$cari}%")
-                           ->orWhere('penyelenggara', 'like', "%{$cari}%");
+                        ->orWhere('penyelenggara', 'like', "%{$cari}%");
                 });
             })
             ->when($filter['kategori'] ?? null, fn ($query, $nilai) => $query->where('kategori', $nilai))
@@ -45,5 +45,18 @@ class OpportunityController extends Controller
             ->withQueryString();
 
         return view('peluang.index', compact('peluang', 'filter'));
+    }
+
+    /**
+     * Halaman detail satu peluang.
+     */
+    public function show(Request $request, Opportunity $peluang): View
+    {
+        abort_unless(
+            $peluang->status === 'disetujui' || $request->user()?->isAdmin(),
+            404
+        );
+
+        return view('peluang.show', compact('peluang'));
     }
 }

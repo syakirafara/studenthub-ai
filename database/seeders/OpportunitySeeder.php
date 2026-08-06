@@ -20,33 +20,33 @@ class OpportunitySeeder extends Seeder
             $hari = match (true) {
                 $i % 9 === 0 => -fake()->numberBetween(3, 30),   // sudah lewat
                 $i % 5 === 0 => fake()->numberBetween(2, 7),     // mepet
-                default      => fake()->numberBetween(10, 90),   // masih lama
+                default => fake()->numberBetween(10, 90),   // masih lama
             };
 
             // Sebar status: mayoritas disetujui, sisanya menunggu / ditolak
             $status = match (true) {
                 $i % 11 === 0 => 'ditolak',
-                $i % 7  === 0 => 'menunggu',
-                default       => 'disetujui',
+                $i % 7 === 0 => 'menunggu',
+                default => 'disetujui',
             };
 
             Opportunity::create([
-                'judul'         => $p['judul'],
+                'judul' => $p['judul'],
                 'penyelenggara' => $p['penyelenggara'],
-                'kategori'      => $p['kategori'],
-                'deskripsi'     => $p['deskripsi'],
-                'deadline'      => now()->addDays($hari)->toDateString(),
-                'biaya'         => $p['biaya'],
+                'kategori' => $p['kategori'],
+                'deskripsi' => $p['deskripsi'],
+                'deadline' => now()->addDays($hari)->toDateString(),
+                'biaya' => $p['biaya'],
                 'nominal_biaya' => $p['biaya'] === 'berbayar' ? fake()->numberBetween(25, 150) * 1000 : null,
-                'tingkat'       => $p['tingkat'],
-                'link'          => 'https://contoh.test/' . str()->slug($p['judul']),
-                'poster_path'   => null,
-                'syarat'        => $p['syarat'],
-                'status'        => $status,
+                'tingkat' => $p['tingkat'],
+                'link' => 'https://contoh.test/'.str()->slug($p['judul']),
+                'poster_path' => null,
+                'syarat' => $p['syarat'],
+                'status' => $status,
                 'catatan_admin' => $status === 'ditolak' ? 'Informasi tidak lengkap, deadline tidak tercantum di poster.' : null,
-                'submitted_by'  => fake()->randomElement($kontributor),
-                'verified_by'   => $status === 'menunggu' ? null : $adminId,
-                'verified_at'   => $status === 'menunggu' ? null : now()->subDays(fake()->numberBetween(1, 20)),
+                'submitted_by' => fake()->randomElement($kontributor),
+                'verified_by' => $status === 'menunggu' ? null : $adminId,
+                'verified_at' => $status === 'menunggu' ? null : now()->subDays(fake()->numberBetween(1, 20)),
             ]);
         }
 
@@ -62,7 +62,7 @@ class OpportunitySeeder extends Seeder
             // Setiap mahasiswa menyimpan 2-5 peluang
             foreach (fake()->randomElements($peluang, fake()->numberBetween(2, 5)) as $id) {
                 SavedItem::create([
-                    'user_id'        => $user->id,
+                    'user_id' => $user->id,
                     'opportunity_id' => $id,
                 ]);
             }
@@ -70,17 +70,17 @@ class OpportunitySeeder extends Seeder
             // Skor kecocokan untuk 6 peluang
             foreach (fake()->randomElements($peluang, 6) as $id) {
                 OpportunityMatch::create([
-                    'user_id'         => $user->id,
-                    'opportunity_id'  => $id,
-                    'skor'            => fake()->numberBetween(35, 96),
-                    'terpenuhi'       => fake()->randomElements(
+                    'user_id' => $user->id,
+                    'opportunity_id' => $id,
+                    'skor' => fake()->numberBetween(35, 96),
+                    'terpenuhi' => fake()->randomElements(
                         ['jurusan sesuai', 'semester sesuai', 'format sesuai', 'biaya sesuai'], 2
                     ),
                     'belum_terpenuhi' => fake()->randomElements(
                         ['butuh tim 3 orang', 'perlu portofolio', 'IPK belum memenuhi'], 1
                     ),
-                    'saran'           => 'Ajak dua rekan satu jurusan dan gunakan tugas kuliah sebagai portofolio.',
-                    'dihitung_pada'   => now()->subHours(fake()->numberBetween(1, 72)),
+                    'saran' => 'Ajak dua rekan satu jurusan dan gunakan tugas kuliah sebagai portofolio.',
+                    'dihitung_pada' => now()->subHours(fake()->numberBetween(1, 72)),
                 ]);
             }
         }

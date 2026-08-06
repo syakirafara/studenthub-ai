@@ -29,29 +29,29 @@ class AuthController extends Controller
     public function daftar(Request $request): RedirectResponse
     {
         $data = $request->validate([
-            'name'        => ['required', 'string', 'max:255'],
-            'email'       => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
-            'password'    => ['required', 'confirmed', Password::min(8)],
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
+            'password' => ['required', 'confirmed', Password::min(8)],
             'universitas' => ['required', 'string', 'max:255'],
-            'jurusan'     => ['required', 'string', 'max:255'],
-            'semester'    => ['required', 'integer', 'between:1,14'],
+            'jurusan' => ['required', 'string', 'max:255'],
+            'semester' => ['required', 'integer', 'between:1,14'],
         ]);
 
         $user = DB::transaction(function () use ($data) {
             $user = User::create([
-                'name'     => $data['name'],
-                'email'    => $data['email'],
+                'name' => $data['name'],
+                'email' => $data['email'],
                 'password' => $data['password'],
-                'role'     => 'mahasiswa',
+                'role' => 'mahasiswa',
             ]);
 
             $user->profile()->create([
                 'universitas' => $data['universitas'],
-                'jurusan'     => $data['jurusan'],
-                'semester'    => $data['semester'],
-                'minat'       => [],
-                'skill'       => [],
-                'preferensi'  => [],
+                'jurusan' => $data['jurusan'],
+                'semester' => $data['semester'],
+                'minat' => [],
+                'skill' => [],
+                'preferensi' => [],
             ]);
 
             return $user;
@@ -78,7 +78,7 @@ class AuthController extends Controller
     public function masuk(Request $request): RedirectResponse
     {
         $kredensial = $request->validate([
-            'email'    => ['required', 'string', 'email'],
+            'email' => ['required', 'string', 'email'],
             'password' => ['required', 'string'],
         ]);
 

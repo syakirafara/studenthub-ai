@@ -55,7 +55,7 @@ class Opportunity extends Model
     {
         return $query->where(function ($q) {
             $q->whereNull('deadline')
-              ->orWhereDate('deadline', '>=', now());
+                ->orWhereDate('deadline', '>=', now());
         });
     }
 
@@ -82,10 +82,10 @@ class Opportunity extends Model
 
         return match (true) {
             $sisa === null => 'tidak_disebutkan',
-            $sisa < 0      => 'lewat',
-            $sisa === 0    => 'hari_ini',
-            $sisa <= 7     => 'mepet',
-            default        => 'aman',
+            $sisa < 0 => 'lewat',
+            $sisa === 0 => 'hari_ini',
+            $sisa <= 7 => 'mepet',
+            default => 'aman',
         };
     }
 
@@ -98,10 +98,10 @@ class Opportunity extends Model
 
         return match (true) {
             $sisa === null => 'Deadline tidak disebutkan',
-            $sisa < 0      => 'Sudah berakhir',
-            $sisa === 0    => 'Berakhir hari ini',
-            $sisa === 1    => 'Tinggal 1 hari',
-            default        => "Tinggal {$sisa} hari",
+            $sisa < 0 => 'Sudah berakhir',
+            $sisa === 0 => 'Berakhir hari ini',
+            $sisa === 1 => 'Tinggal 1 hari',
+            default => "Tinggal {$sisa} hari",
         };
     }
 }

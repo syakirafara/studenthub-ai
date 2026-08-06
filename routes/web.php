@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\OpportunityController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 Route::view('/', 'depan')->name('depan');
 
 Route::get('/peluang', [OpportunityController::class, 'index'])->name('peluang.index');
+Route::get('/peluang/{peluang}', [OpportunityController::class, 'show'])->name('peluang.show');
 
 /*
 |--------------------------------------------------------------------------
@@ -38,6 +40,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/keluar', [AuthController::class, 'keluar'])->name('keluar');
 
     Route::view('/beranda', 'beranda')->name('beranda');
+
+    Route::get('/profil', [ProfileController::class, 'edit'])->name('profil.edit');
+    Route::put('/profil', [ProfileController::class, 'update'])->name('profil.update');
 
     /*
     |----------------------------------------------------------------------

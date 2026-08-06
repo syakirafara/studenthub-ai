@@ -41,7 +41,9 @@
                         <a href="{{ route('admin.dasbor') }}" class="hover:text-utama-600">Dasbor Admin</a>
                     @endif
 
-                    <span class="hidden text-slate-500 sm:inline">{{ auth()->user()->name }}</span>
+                    <a href="{{ route('profil.edit') }}" class="hidden hover:text-utama-600 sm:inline">
+                        {{ auth()->user()->name }}
+                    </a>
 
                     <form method="POST" action="{{ route('keluar') }}">
                         @csrf

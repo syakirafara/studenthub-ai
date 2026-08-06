@@ -15,6 +15,8 @@
     };
 @endphp
 
+<a href="{{ route('peluang.show', $peluang) }}"
+   class="block h-full rounded-lg focus:outline-none focus:ring-2 focus:ring-utama-600 focus:ring-offset-2">
 <x-kartu class="flex h-full flex-col gap-3 p-5 transition hover:border-utama-300 hover:shadow-sm">
 
     <div class="flex flex-wrap items-center gap-2">
@@ -54,3 +56,4 @@
     </div>
 
 </x-kartu>
+</a>
