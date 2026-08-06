@@ -75,12 +75,12 @@
         <div class="mx-auto flex max-w-5xl flex-col items-center gap-3 px-4 text-center">
 
             <div class="flex items-center justify-center gap-6">
+                <img src="{{ asset('images/logo-utm.png') }}"
+                     alt="Logo Universitas Trunojoyo Madura" class="h-12 w-auto">
                 <img src="{{ asset('images/logo-tcc.png') }}"
                      alt="Logo TCC Vibe Code 2026" class="h-12 w-auto">
                 <img src="{{ asset('images/logo-triple-c.png') }}"
                      alt="Logo Creative Computer Club" class="h-12 w-auto">
-                <img src="{{ asset('images/logo-utm.png') }}"
-                     alt="Logo Universitas Trunojoyo Madura" class="h-12 w-auto">
             </div>
 
             <p class="text-xs text-slate-500">
