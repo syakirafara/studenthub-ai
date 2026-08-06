@@ -44,7 +44,11 @@ class OpportunityController extends Controller
             ->paginate(12)
             ->withQueryString();
 
-        return view('peluang.index', compact('peluang', 'filter'));
+        return view('peluang.index', [
+            'peluang' => $peluang,
+            'filter' => $filter,
+            'idTersimpan' => $this->idTersimpan($request),
+        ]);
     }
 
     /**
@@ -57,6 +61,21 @@ class OpportunityController extends Controller
             404
         );
 
-        return view('peluang.show', compact('peluang'));
+        return view('peluang.show', [
+            'peluang' => $peluang,
+            'tersimpan' => $this->idTersimpan($request)->contains($peluang->id),
+        ]);
+    }
+
+    /**
+     * Nomor peluang yang sudah ditandai simpan oleh pengguna yang sedang masuk.
+     *
+     * Diambil sekali dalam satu permintaan, lalu dipakai bersama oleh semua
+     * kartu. Kalau tiap kartu memeriksa sendiri ke database, satu halaman
+     * berisi 12 kartu akan menembak 12 pertanyaan tambahan.
+     */
+    private function idTersimpan(Request $request)
+    {
+        return $request->user()?->savedItems()->pluck('opportunity_id') ?? collect();
     }
 }

@@ -144,6 +144,11 @@
                 </x-tombol>
             @endif
 
+            @auth
+                <x-tombol-simpan :peluang="$peluang" :tersimpan="$tersimpan" :berlabel="true"
+                                 class="flex justify-center border-t border-slate-200 pt-4" />
+            @endauth
+
             @guest
                 <p class="border-t border-slate-200 pt-4 text-xs leading-relaxed text-slate-500">
                     <a href="{{ route('masuk') }}" class="font-medium text-utama-600 hover:underline">Masuk</a>

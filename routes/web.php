@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\OpportunityController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SavedItemController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -43,6 +44,10 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/profil', [ProfileController::class, 'edit'])->name('profil.edit');
     Route::put('/profil', [ProfileController::class, 'update'])->name('profil.update');
+
+    Route::get('/tersimpan', [SavedItemController::class, 'index'])->name('tersimpan.index');
+    Route::post('/peluang/{peluang}/simpan', [SavedItemController::class, 'store'])->name('tersimpan.store');
+    Route::delete('/peluang/{peluang}/simpan', [SavedItemController::class, 'destroy'])->name('tersimpan.destroy');
 
     /*
     |----------------------------------------------------------------------

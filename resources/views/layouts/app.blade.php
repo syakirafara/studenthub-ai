@@ -36,6 +36,7 @@
 
                 @auth
                     <a href="{{ route('beranda') }}" class="hover:text-utama-600">Beranda</a>
+                    <a href="{{ route('tersimpan.index') }}" class="hover:text-utama-600">Tersimpan</a>
 
                     @if (auth()->user()->isAdmin())
                         <a href="{{ route('admin.dasbor') }}" class="hover:text-utama-600">Dasbor Admin</a>

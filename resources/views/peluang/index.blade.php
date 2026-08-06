@@ -101,7 +101,7 @@
 
     <div class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         @foreach ($peluang as $item)
-            <x-kartu-peluang :peluang="$item" />
+            <x-kartu-peluang :peluang="$item" :tersimpan="$idTersimpan->contains($item->id)" />
         @endforeach
     </div>
 

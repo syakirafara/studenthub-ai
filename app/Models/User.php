@@ -50,6 +50,18 @@ class User extends Authenticatable
         return $this->hasMany(SavedItem::class);
     }
 
+    /**
+     * Peluang yang ditandai simpan, langsung sebagai objek Opportunity.
+     *
+     * Bedanya dengan savedItems(): yang itu mengembalikan baris penghubung,
+     * yang ini langsung peluangnya. Dipakai di halaman Tersimpan supaya bisa
+     * disaring dan diurutkan seperti katalog biasa.
+     */
+    public function peluangTersimpan()
+    {
+        return $this->belongsToMany(Opportunity::class, 'saved_items')->withTimestamps();
+    }
+
     public function isAdmin(): bool
     {
         return $this->role === 'admin';
