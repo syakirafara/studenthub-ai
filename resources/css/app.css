@@ -230,6 +230,44 @@
         pointer-events: none;
     }
 
+    /* -- Butiran halus ---------------------------------------------------
+     | Lapisan bintik samar di seluruh halaman.
+     |
+     | Ini rahasia kecil yang membedakan tampilan mahal dari tampilan
+     | "gradasi buatan komputer": gradasi yang benar-benar rata terlihat
+     | palsu dan memunculkan garis-garis peralihan warna. Butiran sehalus ini
+     | memecahnya, dan mata membacanya sebagai bahan, bukan warna kosong.
+     -------------------------------------------------------------------- */
+
+    .butiran::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        opacity: 0.35;
+        mix-blend-mode: overlay;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+    }
+
+    /* -- Sorot mengikuti kursor ------------------------------------------ */
+
+    .kartu-sorot::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.45s ease;
+        background: radial-gradient(
+            260px circle at var(--mx, 50%) var(--my, 0%),
+            rgb(244 213 141 / 0.13),
+            transparent 62%
+        );
+    }
+
+    .kartu-sorot:hover::after { opacity: 1; }
+
     /* -- Kartu ----------------------------------------------------------- */
 
     .kartu-mewah {

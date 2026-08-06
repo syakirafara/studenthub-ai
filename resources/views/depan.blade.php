@@ -22,9 +22,10 @@
         </div>
 
         <h1 data-reveal data-reveal-jeda="90"
-            class="font-judul text-4xl font-bold leading-[1.08] tracking-tight text-white sm:text-6xl">
+            class="font-judul text-[2.6rem] font-bold leading-[1.05] tracking-[-0.03em]
+                   text-white drop-shadow-[0_2px_24px_rgba(0,0,0,0.5)] sm:text-7xl">
             Semua peluang mahasiswa,<br class="hidden sm:block">
-            <span class="teks-emas">dalam satu tempat</span>
+            <span class="teks-emas drop-shadow-[0_0_28px_rgba(212,175,55,0.35)]">dalam satu tempat</span>
         </h1>
 
         <p data-reveal data-reveal-jeda="180"

@@ -22,19 +22,25 @@
         Empat lapis: warna dasar, gumpalan cahaya bergerak, anyaman garis tipis,
         lalu peredup agar teks tetap terbaca di atasnya.
     --}}
-    <div class="pointer-events-none fixed inset-0 -z-10 overflow-hidden" aria-hidden="true">
+    <div class="butiran pointer-events-none fixed inset-0 -z-10 overflow-hidden" aria-hidden="true">
         <div class="absolute inset-0 bg-dasar-900"></div>
 
+        {{-- Sorot utama dari atas layar. Satu sumber cahaya yang jelas membuat
+             mata membaca halaman punya "atas" dan "bawah" -- tanpa ini,
+             latarnya terasa datar berapa pun gradasinya. --}}
+        <div class="absolute -top-56 left-1/2 h-[46rem] w-[80rem] -translate-x-1/2 rounded-full
+                    bg-[radial-gradient(closest-side,rgba(212,175,55,0.16),transparent)] blur-2xl"></div>
+
         <div data-paralaks="26"
-             class="gumpalan -left-40 -top-40 h-[34rem] w-[34rem] bg-utama-600/25"></div>
+             class="gumpalan -left-40 -top-40 h-[34rem] w-[34rem] bg-utama-600/22"></div>
         <div data-paralaks="16" style="animation-delay: -7s"
-             class="gumpalan -right-52 top-24 h-[30rem] w-[30rem] bg-nila-500/20"></div>
+             class="gumpalan -right-52 top-24 h-[30rem] w-[30rem] bg-nila-500/18"></div>
         <div data-paralaks="34" style="animation-delay: -13s"
              class="gumpalan bottom-0 left-1/3 h-[26rem] w-[26rem] bg-langit-500/12"></div>
 
         <div class="kisi absolute inset-0"></div>
 
-        <div class="absolute inset-0 bg-gradient-to-b from-dasar-950/40 via-transparent to-dasar-950/85"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-dasar-950/30 via-transparent to-dasar-950/90"></div>
     </div>
 
     {{-- ================= Bilah menu ================= --}}

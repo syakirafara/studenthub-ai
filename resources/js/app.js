@@ -24,30 +24,17 @@ const kurangiGerak = window.matchMedia('(prefers-reduced-motion: reduce)').match
  --------------------------------------------------------------------------- */
 
 function pasangReveal() {
-    const sasaran = document.querySelectorAll('[data-reveal], [data-reveal-anak]');
+    const sasaran = [...document.querySelectorAll('[data-reveal], [data-reveal-anak]')];
 
     if (! sasaran.length) return;
+
+    const tampilkan = (el) => el.classList.add('terlihat');
 
     if (kurangiGerak || ! ('IntersectionObserver' in window)) {
         sasaran.forEach((el) => el.classList.add('reveal', 'terlihat'));
 
         return;
     }
-
-    sasaran.forEach((el) => el.classList.add('reveal'));
-
-    const pengamat = new IntersectionObserver((entri) => {
-        entri.forEach((e) => {
-            if (! e.isIntersecting) return;
-
-            const jeda = Number(e.target.dataset.revealJeda ?? 0);
-            setTimeout(() => e.target.classList.add('terlihat'), jeda);
-
-            // Sekali muncul, berhenti diamati. Elemen yang terus dipantau
-            // setelah tugasnya selesai hanya membuang tenaga.
-            pengamat.unobserve(e.target);
-        });
-    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
 
     // Beri jeda bertingkat pada anak-anak dalam satu wadah.
     document.querySelectorAll('[data-reveal-grup]').forEach((grup) => {
@@ -56,7 +43,58 @@ function pasangReveal() {
         });
     });
 
-    sasaran.forEach((el) => pengamat.observe(el));
+    const pengamat = new IntersectionObserver((entri) => {
+        entri.forEach((e) => {
+            if (! e.isIntersecting) return;
+
+            setTimeout(() => tampilkan(e.target), Number(e.target.dataset.revealJeda ?? 0));
+
+            // Sekali muncul, berhenti diamati. Elemen yang terus dipantau
+            // setelah tugasnya selesai hanya membuang tenaga.
+            pengamat.unobserve(e.target);
+        });
+    }, { threshold: 0.08, rootMargin: '0px 0px -6% 0px' });
+
+    sasaran.forEach((el) => {
+        const kotak = el.getBoundingClientRect();
+        const sudahDiLayar = kotak.top < window.innerHeight * 0.95;
+
+        el.classList.add('reveal');
+
+        if (sudahDiLayar) {
+            // Sudah terlihat begitu halaman dibuka. Tampilkan lewat penghitung
+            // waktu biasa, TIDAK menitipkannya ke pengamat.
+            //
+            // Alasannya penting: kalau elemen yang sudah di layar ikut
+            // dititipkan ke pengamat lalu pengamatnya gagal karena sebab apa
+            // pun, isi halaman hilang total tanpa jejak galat. Bagian yang
+            // dilihat pertama kali tidak boleh bergantung pada apa pun yang
+            // bisa gagal diam-diam.
+            setTimeout(() => tampilkan(el), Number(el.dataset.revealJeda ?? 0));
+        } else {
+            pengamat.observe(el);
+        }
+    });
+}
+
+/* ---------------------------------------------------------------------------
+ | Sorot mengikuti kursor
+ |
+ | Lingkaran cahaya lembut mengikuti kursor di dalam kartu. Posisinya dikirim
+ | ke CSS lewat dua peubah, sehingga penggambarannya dikerjakan peramban --
+ | JavaScript hanya menyetorkan dua angka.
+ --------------------------------------------------------------------------- */
+
+function pasangSorot() {
+    if (kurangiGerak || window.matchMedia('(hover: none)').matches) return;
+
+    document.querySelectorAll('[data-sorot]').forEach((el) => {
+        el.addEventListener('pointermove', (e) => {
+            const k = el.getBoundingClientRect();
+            el.style.setProperty('--mx', `${e.clientX - k.left}px`);
+            el.style.setProperty('--my', `${e.clientY - k.top}px`);
+        });
+    });
 }
 
 /* ---------------------------------------------------------------------------
@@ -272,6 +310,7 @@ function mulai() {
     pasangHitungAngka();
     pasangParalaks();
     pasangBatang();
+    pasangSorot();
 }
 
 if (document.readyState === 'loading') {
