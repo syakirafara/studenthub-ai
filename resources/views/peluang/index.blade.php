@@ -5,7 +5,9 @@
 @section('isi')
 
 @php
-    $kelasIsian = 'w-full rounded-lg border border-white/12 px-3 py-2 text-sm focus:border-utama-400 focus:outline-none focus:ring-1 focus:ring-utama-500/30';
+    $kelasIsian = 'w-full rounded-lg border border-white/12 bg-white/5 px-3 py-2 text-sm text-slate-100
+                   transition-colors duration-300 placeholder:text-slate-500 hover:border-white/20
+                   focus:border-utama-400 focus:bg-white/8 focus:outline-none focus:ring-1 focus:ring-utama-500/30';
 @endphp
 
 <div>
@@ -65,13 +67,13 @@
         <div class="flex flex-wrap items-center gap-4">
             <label class="flex items-center gap-2 text-sm text-slate-300">
                 <input type="checkbox" name="biaya" value="gratis" @checked(request('biaya') === 'gratis')
-                       class="rounded border-white/12 text-utama-300 focus:ring-utama-500/30">
+                       class="h-4 w-4 cursor-pointer rounded border-white/20">
                 Hanya yang gratis
             </label>
 
             <label class="flex items-center gap-2 text-sm text-slate-300">
                 <input type="checkbox" name="tampilkan_lewat" value="1" @checked(request('tampilkan_lewat'))
-                       class="rounded border-white/12 text-utama-300 focus:ring-utama-500/30">
+                       class="h-4 w-4 cursor-pointer rounded border-white/20">
                 Tampilkan yang sudah berakhir
             </label>
         </div>

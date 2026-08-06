@@ -116,6 +116,33 @@
 
     html {
         scroll-behavior: smooth;
+
+        /* Satu baris ini yang membuat kendali bawaan peramban ikut gelap:
+           daftar pilihan <select>, kotak centang, pemilih tanggal, batang
+           gulir, sampai warna isian otomatis.
+
+           Tanpa ini, daftar pilihan digambar sistem operasi dengan latar
+           PUTIH sementara tulisannya mewarisi warna terang dari halaman --
+           terang di atas terang, jadi tidak terbaca sama sekali. Menambal
+           tiap <option> satu per satu tidak menyelesaikan akarnya. */
+        color-scheme: dark;
+    }
+
+    /* Sabuk pengaman. Sebagian peramban lama belum menghormati color-scheme
+       pada daftar pilihan, jadi warnanya tetap disebut terang-terangan. */
+    option {
+        background-color: var(--color-dasar-850);
+        color: rgb(226 232 240);
+    }
+
+    /* Kotak centang dan tombol radio bawaan ikut warna utama, tanpa perlu
+       menggantinya dengan elemen buatan sendiri yang justru merepotkan
+       pembaca layar. */
+    input[type='checkbox'],
+    input[type='radio'],
+    progress,
+    input[type='range'] {
+        accent-color: var(--color-utama-500);
     }
 
     body {
