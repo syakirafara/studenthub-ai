@@ -37,6 +37,10 @@
                 @auth
                     <a href="{{ route('beranda') }}" class="hover:text-utama-600">Beranda</a>
                     <a href="{{ route('tersimpan.index') }}" class="hover:text-utama-600">Tersimpan</a>
+                    <a href="{{ route('unggah.buat') }}"
+                       class="rounded-md bg-utama-600 px-3 py-1.5 font-medium text-white hover:bg-utama-700">
+                        Unggah poster
+                    </a>
 
                     @if (auth()->user()->isAdmin())
                         <a href="{{ route('admin.dasbor') }}" class="hover:text-utama-600">Dasbor Admin</a>
@@ -98,6 +102,9 @@
 
         </div>
     </footer>
+
+    {{-- Tempat halaman menyelipkan skrip khususnya sendiri, lewat @push('skrip') --}}
+    @stack('skrip')
 
 </body>
 </html>

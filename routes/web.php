@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\OpportunityController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SavedItemController;
+use App\Http\Controllers\UnggahPosterController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -44,6 +45,10 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/profil', [ProfileController::class, 'edit'])->name('profil.edit');
     Route::put('/profil', [ProfileController::class, 'update'])->name('profil.update');
+
+    Route::get('/unggah', [UnggahPosterController::class, 'create'])->name('unggah.buat');
+    Route::post('/unggah', [UnggahPosterController::class, 'store'])->name('unggah.simpan');
+    Route::get('/unggah/{peluang}/periksa', [UnggahPosterController::class, 'periksa'])->name('unggah.periksa');
 
     Route::get('/tersimpan', [SavedItemController::class, 'index'])->name('tersimpan.index');
     Route::post('/peluang/{peluang}/simpan', [SavedItemController::class, 'store'])->name('tersimpan.store');
