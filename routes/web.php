@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminPeluangController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BerandaController;
 use App\Http\Controllers\KecocokanController;
 use App\Http\Controllers\OpportunityController;
 use App\Http\Controllers\ProfileController;
@@ -43,7 +44,7 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::post('/keluar', [AuthController::class, 'keluar'])->name('keluar');
 
-    Route::view('/beranda', 'beranda')->name('beranda');
+    Route::get('/beranda', [BerandaController::class, 'index'])->name('beranda');
 
     Route::get('/profil', [ProfileController::class, 'edit'])->name('profil.edit');
     Route::put('/profil', [ProfileController::class, 'update'])->name('profil.update');

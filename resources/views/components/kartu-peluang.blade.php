@@ -1,6 +1,7 @@
 @props([
     'peluang',
     'tersimpan' => false,
+    'skor' => null,
 ])
 
 @php
@@ -26,6 +27,20 @@
     dalam tautan — susunan yang tidak sah di HTML dan membuat kliknya bentrok.
 --}}
 <x-kartu class="relative flex h-full flex-col gap-3 p-5 transition hover:border-utama-300 hover:shadow-sm focus-within:ring-2 focus-within:ring-utama-600 focus-within:ring-offset-2">
+
+    @if ($skor)
+        {{-- Skor ditaruh paling atas: inilah alasan kartu ini muncul di sini. --}}
+        <div class="flex items-center gap-2 border-b border-slate-100 pb-3">
+            <span class="text-2xl font-semibold
+                         {{ $skor->warna() === 'utama' ? 'text-utama-700'
+                            : ($skor->warna() === 'waspada' ? 'text-waspada-700' : 'text-slate-500') }}">
+                {{ $skor->skor }}
+            </span>
+            <span class="text-xs leading-tight text-slate-500">
+                dari 100<br>{{ $skor->keterangan() }}
+            </span>
+        </div>
+    @endif
 
     <div class="flex flex-wrap items-center gap-2">
         <x-lencana :warna="$warnaKategori">{{ ucfirst($peluang->kategori) }}</x-lencana>
