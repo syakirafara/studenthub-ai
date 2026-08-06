@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\OpportunityController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -10,6 +11,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::view('/', 'depan')->name('depan');
+
+Route::get('/peluang', [OpportunityController::class, 'index'])->name('peluang.index');
 
 /*
 |--------------------------------------------------------------------------

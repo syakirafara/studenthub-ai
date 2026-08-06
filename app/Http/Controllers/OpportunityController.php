@@ -1,0 +1,49 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Opportunity;
+use Illuminate\Http\Request;
+use Illuminate\View\View;
+
+class OpportunityController extends Controller
+{
+    /**
+     * Katalog peluang yang sudah diverifikasi admin.
+     *
+     * Halaman ini sengaja dibuka untuk umum tanpa perlu masuk, supaya siapa pun
+     * bisa langsung melihat isinya. Skor kecocokan barulah yang butuh akun.
+     */
+    public function index(Request $request): View
+    {
+        $filter = $request->validate([
+            'cari'            => ['nullable', 'string', 'max:100'],
+            'kategori'        => ['nullable', 'in:lomba,beasiswa,magang'],
+            'tingkat'         => ['nullable', 'in:kampus,regional,nasional,internasional'],
+            'biaya'           => ['nullable', 'in:gratis,berbayar'],
+            'urut'            => ['nullable', 'in:deadline,terbaru'],
+            'tampilkan_lewat' => ['nullable', 'boolean'],
+        ]);
+
+        $peluang = Opportunity::disetujui()
+            ->when($filter['cari'] ?? null, function ($query, $cari) {
+                $query->where(function ($cabang) use ($cari) {
+                    $cabang->where('judul', 'like', "%{$cari}%")
+                           ->orWhere('penyelenggara', 'like', "%{$cari}%");
+                });
+            })
+            ->when($filter['kategori'] ?? null, fn ($query, $nilai) => $query->where('kategori', $nilai))
+            ->when($filter['tingkat'] ?? null, fn ($query, $nilai) => $query->where('tingkat', $nilai))
+            ->when($filter['biaya'] ?? null, fn ($query, $nilai) => $query->where('biaya', $nilai))
+            ->unless($filter['tampilkan_lewat'] ?? false, fn ($query) => $query->masihBuka())
+            ->when(
+                ($filter['urut'] ?? 'deadline') === 'terbaru',
+                fn ($query) => $query->latest(),
+                fn ($query) => $query->orderByRaw('deadline IS NULL, deadline ASC'),
+            )
+            ->paginate(12)
+            ->withQueryString();
+
+        return view('peluang.index', compact('peluang', 'filter'));
+    }
+}

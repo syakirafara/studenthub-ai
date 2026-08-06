@@ -44,8 +44,64 @@ class Opportunity extends Model
         return $query->where('status', 'disetujui');
     }
 
+    /**
+     * Peluang yang masih boleh didaftar.
+     *
+     * Deadline kosong ikut dihitung masih buka, karena banyak poster tidak
+     * mencantumkan tanggal. Menyembunyikannya berarti menghilangkan peluang
+     * yang sebenarnya masih berlaku.
+     */
     public function scopeMasihBuka($query)
     {
-        return $query->whereDate('deadline', '>=', now());
+        return $query->where(function ($q) {
+            $q->whereNull('deadline')
+              ->orWhereDate('deadline', '>=', now());
+        });
+    }
+
+    /**
+     * Sisa hari menuju deadline.
+     * Positif berarti masih ada waktu, negatif berarti sudah lewat,
+     * null berarti deadline tidak disebutkan.
+     */
+    public function sisaHari(): ?int
+    {
+        if (! $this->deadline) {
+            return null;
+        }
+
+        return (int) now()->startOfDay()->diffInDays($this->deadline->startOfDay(), false);
+    }
+
+    /**
+     * Golongan deadline, dipakai untuk menentukan warna lencana.
+     */
+    public function statusDeadline(): string
+    {
+        $sisa = $this->sisaHari();
+
+        return match (true) {
+            $sisa === null => 'tidak_disebutkan',
+            $sisa < 0      => 'lewat',
+            $sisa === 0    => 'hari_ini',
+            $sisa <= 7     => 'mepet',
+            default        => 'aman',
+        };
+    }
+
+    /**
+     * Kalimat hitung mundur yang dibaca pengguna.
+     */
+    public function teksDeadline(): string
+    {
+        $sisa = $this->sisaHari();
+
+        return match (true) {
+            $sisa === null => 'Deadline tidak disebutkan',
+            $sisa < 0      => 'Sudah berakhir',
+            $sisa === 0    => 'Berakhir hari ini',
+            $sisa === 1    => 'Tinggal 1 hari',
+            default        => "Tinggal {$sisa} hari",
+        };
     }
 }

@@ -24,6 +24,8 @@
             </a>
 
             <div class="flex items-center gap-4 text-sm">
+                <a href="{{ route('peluang.index') }}" class="hover:text-utama-600">Katalog</a>
+
                 @guest
                     <a href="{{ route('masuk') }}" class="hover:text-utama-600">Masuk</a>
                     <a href="{{ route('daftar') }}"
