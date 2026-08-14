@@ -7,12 +7,18 @@
 ])
 
 {{--
-    Wadah kaca. Bawaannya ikut terangkat saat disentuh; beri :datar="true"
-    untuk kartu yang bukan tautan, supaya tidak terasa bisa diklik padahal tidak.
+    Kartu bertepi tegas.
+
+    Sudutnya dibiarkan siku, bukan dilengkungkan. Lengkungan melembutkan, dan
+    gaya ini justru hidup dari ketegasan -- sudut siku dengan garis tebal
+    terbaca sebagai benda yang dicetak, bukan digambar.
+
+    Beri :datar="true" untuk kartu yang bukan tautan, supaya tidak terangkat
+    saat disentuh dan tidak terasa bisa diklik padahal tidak.
 --}}
-<div @unless ($datar) data-sorot @endunless {{ $attributes->merge([
-    'class' => "kaca kaca-tepi relative overflow-hidden rounded-2xl shadow-naik {$jarak} "
-        .($datar ? '' : 'kartu-mewah kartu-sorot'),
+<div {{ $attributes->merge([
+    'class' => "kaca relative {$jarak} "
+        .($datar ? 'shadow-keras' : 'kartu-mewah'),
 ]) }}>
-    <div class="relative z-10">{{ $slot }}</div>
+    {{ $slot }}
 </div>

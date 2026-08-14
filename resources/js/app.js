@@ -305,12 +305,22 @@ function pasangBatang() {
 function mulai() {
     pasangReveal();
     pasangNavbar();
-    pasangMagnet();
-    pasangTilt();
     pasangHitungAngka();
-    pasangParalaks();
     pasangBatang();
-    pasangSorot();
+
+    /*
+     | Empat efek sengaja TIDAK dipanggil sejak tampilan berganti ke gaya
+     | neo-brutalism: pasangMagnet, pasangTilt, pasangParalaks, pasangSorot.
+     |
+     | Semuanya lahir dari gaya kaca — kartu yang miring mengikuti kursor,
+     | cahaya yang berpendar, latar yang bergeser. Gaya ini kebalikannya:
+     | bidang rata, tepi tegas, gerak yang singkat dan patah. Benda yang
+     | memiringkan diri dengan halus justru membuat tepi tebalnya terlihat
+     | seperti kesalahan gambar.
+     |
+     | Fungsinya tidak dihapus, hanya tidak dipakai -- kalau suatu saat
+     | tampilannya berubah lagi, tinggal dipanggil kembali.
+     */
 }
 
 if (document.readyState === 'loading') {

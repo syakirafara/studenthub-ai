@@ -20,12 +20,12 @@
     <button type="submit"
             title="{{ $keterangan }}"
             aria-label="{{ $keterangan }}"
-            class="inline-flex items-center gap-2 rounded-lg px-2.5 py-1.5 text-sm
+            class="inline-flex items-center gap-2  px-2.5 py-1.5 text-sm
                    transition-all duration-300 focus:outline-none focus-visible:outline-2
                    focus-visible:outline-offset-2 focus-visible:outline-utama-400
                    {{ $tersimpan
-                        ? 'text-utama-300 hover:bg-utama-500/12'
-                        : 'text-slate-400 hover:bg-white/6 hover:text-utama-200' }}">
+                        ? 'text-utama-600 hover:bg-utama-500/12'
+                        : 'text-dasar-600 hover:bg-dasar-200 hover:text-utama-700' }}">
 
         <svg viewBox="0 0 24 24" class="h-5 w-5 shrink-0 transition-transform duration-300 hover:scale-110"
              fill="{{ $tersimpan ? 'currentColor' : 'none' }}"

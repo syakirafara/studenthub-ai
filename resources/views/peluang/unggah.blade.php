@@ -6,11 +6,11 @@
 <div class="mx-auto max-w-xl">
 
     <div data-reveal>
-        <p class="text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-utama-300">
+        <p class="text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-utama-600">
             Dibaca AI
         </p>
-        <h1 class="mt-1.5 font-judul text-3xl font-bold tracking-tight text-white">Unggah poster</h1>
-        <p class="mt-1.5 text-sm leading-relaxed text-slate-400">
+        <h1 class="mt-1.5 font-judul text-3xl font-bold tracking-tight text-dasar-900">Unggah poster</h1>
+        <p class="mt-1.5 text-sm leading-relaxed text-dasar-600">
             Temukan poster lomba, beasiswa, atau magang di Instagram? Unggah di sini.
             AI akan membacanya untukmu &mdash; kamu tidak perlu mengetik ulang apa pun.
         </p>
@@ -21,19 +21,19 @@
         @csrf
 
         <x-kartu datar data-reveal data-reveal-jeda="80">
-            <label for="poster" class="block text-sm font-medium text-slate-200">Berkas poster</label>
+            <label for="poster" class="block text-sm font-medium text-dasar-800">Berkas poster</label>
 
             <input id="poster" name="poster" type="file" required
                    accept="image/jpeg,image/png,image/webp"
                    @error('poster') aria-invalid="true" aria-describedby="poster-error" @enderror
-                   class="mt-1 w-full rounded-lg border border-white/12 bg-white/5 p-2 text-sm
+                   class="mt-1 w-full  border border-dasar-900 bg-dasar-100 p-2 text-sm
                           file:mr-3 file:rounded-lg file:border-0 file:bg-utama-500/12 file:px-3 file:py-1.5
                           file:text-sm file:font-medium file:text-utama-200 hover:file:bg-utama-500/20">
 
-            <p class="mt-1 text-xs text-slate-400">JPG, PNG, atau WebP. Maksimal 8 MB.</p>
+            <p class="mt-1 text-xs text-dasar-600">JPG, PNG, atau WebP. Maksimal 8 MB.</p>
 
             @error('poster')
-                <p id="poster-error" class="mt-1 text-sm text-bahaya-300">{{ $message }}</p>
+                <p id="poster-error" class="mt-1 text-sm text-bahaya-600">{{ $message }}</p>
             @enderror
         </x-kartu>
 
@@ -42,7 +42,7 @@
              hasil bangunan, bukan urutan penulisan -- jadi p-6 bawaan komponen
              akan selalu menang atas p-5 yang ditulis di sini. --}}
         <x-kartu datar jarak="p-5" data-reveal data-reveal-jeda="140">
-            <p class="text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-slate-500">
+            <p class="text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-dasar-500">
                 Yang terjadi setelah kamu kirim
             </p>
 
@@ -53,18 +53,18 @@
                     'Kamu memeriksa hasilnya — kalau ada yang keliru, bisa dibetulkan',
                     'Admin memverifikasi sebelum tampil di katalog',
                 ] as $nomor => $langkah)
-                    <li class="flex items-start gap-3 text-sm leading-relaxed text-slate-300">
+                    <li class="flex items-start gap-3 text-sm leading-relaxed text-dasar-700">
                         <span aria-hidden="true"
-                              class="mt-px grid h-5 w-5 shrink-0 place-items-center rounded-md
-                                     bg-utama-500/12 text-[0.65rem] font-semibold text-utama-300
-                                     ring-1 ring-inset ring-utama-400/25">{{ $nomor + 1 }}</span>
+                              class="mt-px grid h-5 w-5 shrink-0 place-items-center 
+                                     bg-utama-500/12 text-[0.65rem] font-semibold text-utama-600
+                                     ring-1 ring-inset ring-dasar-900">{{ $nomor + 1 }}</span>
                         {{ $langkah }}
                     </li>
                 @endforeach
             </ol>
 
-            <p class="mt-4 border-t border-white/8 pt-3 text-xs text-slate-400">
-                Pembacaan memakan waktu sekitar <strong class="text-slate-300">10&ndash;20 detik</strong>.
+            <p class="mt-4 border-t border-dasar-900 pt-3 text-xs text-dasar-600">
+                Pembacaan memakan waktu sekitar <strong class="text-dasar-700">10&ndash;20 detik</strong>.
                 Jangan tutup halaman ini.
             </p>
         </x-kartu>
@@ -75,15 +75,15 @@
         </div>
 
         <div data-penanda-tunggu hidden
-             class="flex items-center gap-3 rounded-lg border border-utama-400/30 bg-utama-500/12 px-4 py-3"
+             class="flex items-center gap-3  border border-utama-400/30 bg-utama-500/12 px-4 py-3"
              role="status" aria-live="polite">
-            <svg class="h-5 w-5 shrink-0 animate-spin text-utama-300" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <svg class="h-5 w-5 shrink-0 animate-spin text-utama-600" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                 <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" class="opacity-25"/>
                 <path d="M12 2a10 10 0 0 1 10 10" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
             </svg>
-            <div class="text-sm text-utama-200">
+            <div class="text-sm text-utama-700">
                 <p class="font-medium">Sedang membaca posternya...</p>
-                <p class="text-utama-200">Biasanya 10&ndash;20 detik. Jangan tutup atau segarkan halaman.</p>
+                <p class="text-utama-700">Biasanya 10&ndash;20 detik. Jangan tutup atau segarkan halaman.</p>
             </div>
         </div>
 

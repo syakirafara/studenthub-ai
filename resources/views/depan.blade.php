@@ -11,27 +11,29 @@
 
     <div class="mx-auto max-w-3xl text-center">
 
+        {{-- Label dimiringkan sedikit supaya terbaca seperti stiker yang
+             ditempel, bukan kotak yang digambar. Kemiringannya kecil dengan
+             sengaja: lebih dari dua derajat mulai terasa berantakan. --}}
         <div data-reveal class="mb-7 flex justify-center">
-            <span class="kaca inline-flex items-center gap-2.5 rounded-full px-4 py-1.5 text-xs text-slate-300">
-                <span class="relative flex h-1.5 w-1.5">
-                    <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-utama-400 opacity-70"></span>
-                    <span class="relative inline-flex h-1.5 w-1.5 rounded-full bg-utama-400"></span>
-                </span>
+            <span class="stiker kaca inline-flex items-center gap-2.5 px-4 py-1.5 text-xs
+                         font-bold uppercase tracking-wide text-dasar-800 shadow-keras">
+                <span class="h-2 w-2 bg-utama-500"></span>
                 Ditenagai AI &middot; karya untuk TCC Vibe Code 2026
             </span>
         </div>
 
         <h1 data-reveal data-reveal-jeda="90"
-            class="font-judul text-[2.6rem] font-bold leading-[1.05] tracking-[-0.03em]
-                   text-white drop-shadow-[0_2px_24px_rgba(0,0,0,0.5)] sm:text-7xl">
-            Semua peluang mahasiswa,<br class="hidden sm:block">
-            <span class="teks-emas drop-shadow-[0_0_28px_rgba(212,175,55,0.35)]">dalam satu tempat</span>
+            class="font-judul text-[2.6rem] font-bold uppercase leading-[0.95] tracking-[-0.04em]
+                   text-dasar-900 sm:text-7xl">
+            Semua peluang<br class="hidden sm:block">
+            mahasiswa,
+            <span class="teks-emas">satu tempat</span>
         </h1>
 
         <p data-reveal data-reveal-jeda="180"
-           class="mx-auto mt-6 max-w-xl text-base leading-relaxed text-slate-300 sm:text-lg">
+           class="mx-auto mt-6 max-w-xl text-base leading-relaxed text-dasar-700 sm:text-lg">
             Lomba, beasiswa, dan magang dikumpulkan bersama, lalu dibaca AI supaya kamu tahu
-            <span class="font-medium text-white">mana yang benar-benar cocok denganmu</span>
+            <span class="font-medium text-dasar-900">mana yang benar-benar cocok denganmu</span>
             sebelum mendaftar.
         </p>
 
@@ -69,15 +71,16 @@
                 ['kategori', 'Kategori'],
                 ['kontributor', 'Kontributor'],
             ] as [$kunci, $label])
-                <div data-reveal-anak class="kaca kaca-tepi rounded-2xl px-3 py-5">
-                    <p class="font-judul text-3xl font-bold text-white" data-hitung="{{ $jumlah[$kunci] }}">0</p>
-                    <p class="mt-1 text-xs tracking-tight text-slate-400">{{ $label }}</p>
+                <div data-reveal-anak class="kaca px-3 py-5 shadow-keras">
+                    <p class="font-judul text-3xl font-bold tabular-nums text-dasar-900"
+                       data-hitung="{{ $jumlah[$kunci] }}">0</p>
+                    <p class="mt-1 text-[0.68rem] font-bold uppercase tracking-wide text-dasar-600">{{ $label }}</p>
                 </div>
             @endforeach
         </div>
 
         <div class="mt-14 flex justify-center" aria-hidden="true">
-            <svg viewBox="0 0 24 24" class="turun-naik h-5 w-5 text-slate-400" fill="none"
+            <svg viewBox="0 0 24 24" class="turun-naik h-5 w-5 text-dasar-600" fill="none"
                  stroke="currentColor" stroke-width="1.6">
                 <path stroke-linecap="round" stroke-linejoin="round" d="m6 9 6 6 6-6"/>
             </svg>
@@ -92,8 +95,8 @@
 <section class="py-16">
 
     <div data-reveal class="mx-auto max-w-2xl text-center">
-        <p class="text-xs font-medium uppercase tracking-[0.2em] text-utama-300">Cara kerja</p>
-        <h2 class="mt-3 font-judul text-3xl font-bold tracking-tight text-white sm:text-4xl">
+        <p class="text-xs font-medium uppercase tracking-[0.2em] text-utama-600">Cara kerja</p>
+        <h2 class="mt-3 font-judul text-3xl font-bold tracking-tight text-dasar-900 sm:text-4xl">
             Tiga langkah, tanpa mengetik ulang apa pun
         </h2>
     </div>
@@ -121,20 +124,20 @@
             ],
         ] as [$nomor, $judul, $isi, $ikon])
             <div data-reveal-anak>
-                <x-kartu data-tilt="6" class="h-full">
+                <x-kartu class="h-full">
                     <div class="flex items-start justify-between">
-                        <span class="grid h-11 w-11 place-items-center rounded-xl border border-utama-400/25
-                                     bg-gradient-to-br from-utama-500/18 to-transparent text-utama-200">
+                        <span class="grid h-12 w-12 place-items-center border-[2.5px] border-dasar-900
+                                     bg-utama-300 text-utama-800 shadow-keras">
                             <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor"
-                                 stroke-width="1.6" aria-hidden="true">
+                                 stroke-width="2" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="{{ $ikon }}"/>
                             </svg>
                         </span>
-                        <span class="font-judul text-2xl font-bold text-white/8">{{ $nomor }}</span>
+                        <span class="font-judul text-4xl font-bold leading-none text-dasar-300">{{ $nomor }}</span>
                     </div>
 
-                    <h3 class="mt-5 font-judul text-lg font-semibold text-white">{{ $judul }}</h3>
-                    <p class="mt-2 text-sm leading-relaxed text-slate-400">{{ $isi }}</p>
+                    <h3 class="mt-5 font-judul text-lg font-bold uppercase text-dasar-900">{{ $judul }}</h3>
+                    <p class="mt-2 text-sm leading-relaxed text-dasar-600">{{ $isi }}</p>
                 </x-kartu>
             </div>
         @endforeach
@@ -150,14 +153,14 @@
     <div class="grid gap-10 lg:grid-cols-2 lg:items-center">
 
         <div data-reveal>
-            <p class="text-xs font-medium uppercase tracking-[0.2em] text-utama-300">Yang membedakan</p>
-            <h2 class="mt-3 font-judul text-3xl font-bold leading-tight tracking-tight text-white sm:text-4xl">
+            <p class="text-xs font-medium uppercase tracking-[0.2em] text-utama-600">Yang membedakan</p>
+            <h2 class="mt-3 font-judul text-3xl font-bold leading-tight tracking-tight text-dasar-900 sm:text-4xl">
                 Bukan sekadar katalog.<br>
                 <span class="teks-emas">Penjaga syarat.</span>
             </h2>
-            <p class="mt-5 text-base leading-relaxed text-slate-300">
+            <p class="mt-5 text-base leading-relaxed text-dasar-700">
                 Katalog peluang sudah banyak. Yang belum ada adalah yang mau berterus terang
-                bahwa kamu <em class="not-italic text-white">belum</em> memenuhi syarat &mdash;
+                bahwa kamu <em class="not-italic text-dasar-900">belum</em> memenuhi syarat &mdash;
                 sebelum kamu terlanjur mendaftar dan tersingkir di tahap administrasi.
             </p>
 
@@ -168,9 +171,9 @@
                     'Memberi saran yang bisa langsung dikerjakan',
                     'Akurasi pembacaan diukur dari koreksi admin, bukan diklaim',
                 ] as $butir)
-                    <li data-reveal-anak class="flex gap-3 text-sm text-slate-300">
-                        <span class="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full
-                                     bg-utama-500/120/15 text-utama-300" aria-hidden="true">
+                    <li data-reveal-anak class="flex gap-3 text-sm text-dasar-700">
+                        <span class="mt-0.5 grid h-5 w-5 shrink-0 place-items-center border-2
+                                     border-dasar-900 bg-utama-300 text-utama-800" aria-hidden="true">
                             <svg viewBox="0 0 20 20" class="h-3 w-3" fill="currentColor">
                                 <path d="M16.7 5.3a1 1 0 0 1 0 1.4l-7.5 7.5a1 1 0 0 1-1.4 0L3.3 9.7a1 1 0 1 1 1.4-1.4l3.8 3.8 6.8-6.8a1 1 0 0 1 1.4 0z"/>
                             </svg>
@@ -181,43 +184,48 @@
             </ul>
         </div>
 
-        {{-- Pratinjau kartu skor --}}
+        {{-- Pratinjau kartu skor. Dimiringkan sedikit supaya terbaca sebagai
+             contoh yang ditempel, bukan sebagai bagian tata letak. --}}
         <div data-reveal data-reveal-jeda="140" class="relative">
-            <div class="gumpalan -right-10 top-10 h-64 w-64 bg-utama-500/22"></div>
-
-            <x-kartu data-tilt="7" class="relative mengambang space-y-5">
+            <x-kartu datar class="stiker-kanan space-y-5 shadow-melayang">
                 <div>
-                    <p class="text-xs uppercase tracking-[0.16em] text-slate-500">Kecocokan denganmu</p>
+                    <p class="text-[0.68rem] font-bold uppercase tracking-[0.16em] text-dasar-500">
+                        Kecocokan denganmu
+                    </p>
                     <div class="mt-2 flex items-baseline gap-2.5">
-                        <span class="teks-emas font-judul text-5xl font-bold leading-none" data-hitung="83">0</span>
-                        <span class="text-sm text-slate-500">dari 100</span>
+                        <span class="font-judul text-6xl font-bold leading-none tabular-nums text-utama-700"
+                              data-hitung="83">0</span>
+                        <span class="text-sm font-semibold text-dasar-500">dari 100</span>
                     </div>
-                    <p class="mt-1.5 text-sm font-medium text-slate-200">Sangat cocok untukmu</p>
+                    <p class="mt-1.5 text-sm font-bold uppercase text-dasar-800">Sangat cocok untukmu</p>
 
-                    <div class="mt-3 h-1.5 w-full overflow-hidden rounded-full bg-white/5/8">
-                        <div class="h-full rounded-full bg-gradient-to-r from-utama-300 to-utama-500
-                                    shadow-[0_0_18px_-2px_rgba(212,175,55,0.7)]" data-batang="83"></div>
+                    {{-- Batang diberi tepi penuh, bukan sekadar bidang warna.
+                         Tanpa tepi, batang yang hampir penuh sulit dibedakan
+                         dari wadahnya. --}}
+                    <div class="mt-3 h-4 w-full border-2 border-dasar-900 bg-dasar-200">
+                        <div class="h-full bg-utama-500" data-batang="83"></div>
                     </div>
                 </div>
 
                 <div class="space-y-2 text-sm">
-                    <p class="flex gap-2.5 text-slate-200">
-                        <span class="text-utama-300" aria-hidden="true">&check;</span>
+                    <p class="flex gap-2.5 text-dasar-800">
+                        <span class="text-utama-600" aria-hidden="true">&check;</span>
                         Jurusan sesuai dengan syarat
                     </p>
-                    <p class="flex gap-2.5 text-slate-200">
-                        <span class="text-utama-300" aria-hidden="true">&check;</span>
+                    <p class="flex gap-2.5 text-dasar-800">
+                        <span class="text-utama-600" aria-hidden="true">&check;</span>
                         Semester memenuhi batas minimum
                     </p>
-                    <p class="flex gap-2.5 text-slate-200">
-                        <span class="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-waspada-400" aria-hidden="true"></span>
+                    <p class="flex gap-2.5 text-dasar-800">
+                        <span class="mt-1 h-3 w-3 shrink-0 border-2 border-dasar-900 bg-waspada-400"
+                              aria-hidden="true"></span>
                         Perlu tim 3 orang &mdash; kamu belum punya
                     </p>
                 </div>
 
-                <div class="rounded-xl border border-utama-400/20 bg-utama-500/8 p-4">
-                    <p class="text-xs font-medium uppercase tracking-[0.16em] text-utama-200">Saran</p>
-                    <p class="mt-1.5 text-sm leading-relaxed text-slate-300">
+                <div class="border-[2.5px] border-dasar-900 bg-utama-200 p-4">
+                    <p class="text-[0.68rem] font-bold uppercase tracking-[0.16em] text-utama-800">Saran</p>
+                    <p class="mt-1.5 text-sm leading-relaxed text-dasar-800">
                         Ajak dua rekan satu jurusan, dan gunakan tugas kuliahmu sebagai portofolio.
                     </p>
                 </div>
@@ -231,17 +239,19 @@
    | AJAKAN PENUTUP
    ===================================================================== --}}
 <section class="py-16">
-    <div data-reveal class="relative overflow-hidden rounded-3xl">
+    {{-- Blok penutup dibuat GELAP, kebalikan dari seluruh halaman.
+         Pembalikan warna adalah cara paling kuat menandai "ini bagian
+         terakhir dan terpenting" tanpa perlu memperbesar apa pun. --}}
+    <div data-reveal class="relative">
 
-        <div class="kaca-pekat kaca-tepi relative rounded-3xl px-8 py-14 text-center sm:px-14">
-            <div class="gumpalan -left-16 -top-16 h-72 w-72 bg-utama-500/120/22"></div>
-            <div class="gumpalan -bottom-20 -right-10 h-72 w-72 bg-nila-500/18" style="animation-delay: -9s"></div>
-
+        <div class="kaca-pekat relative px-8 py-16 text-center shadow-melayang sm:px-14">
             <div class="relative">
-                <h2 class="mx-auto max-w-2xl font-judul text-3xl font-bold leading-tight tracking-tight text-white sm:text-4xl">
-                    Berhenti memantau sepuluh akun setiap hari
+                <h2 class="mx-auto max-w-2xl font-judul text-3xl font-bold uppercase leading-tight
+                           tracking-tight text-dasar-50 sm:text-5xl">
+                    Berhenti memantau<br class="hidden sm:block">
+                    sepuluh akun setiap hari
                 </h2>
-                <p class="mx-auto mt-4 max-w-lg text-base leading-relaxed text-slate-300">
+                <p class="mx-auto mt-5 max-w-lg text-base leading-relaxed text-dasar-300">
                     Satu tempat, satu profil, dan AI yang memberitahu mana yang layak kamu kejar.
                 </p>
 

@@ -1,20 +1,27 @@
 @props(['warna' => 'abu'])
 
 @php
-    // Warna tipis di atas kaca gelap. Latarnya sengaja hampir transparan --
-    // lencana yang terlalu pekat merebut perhatian dari judul di sebelahnya.
+    /*
+     | Di tema kaca, lencana dibuat nyaris tembus pandang supaya tidak merebut
+     | perhatian dari judul. Di gaya ini kebalikannya: bidang warna PENUH
+     | dengan tepi pekat.
+     |
+     | Yang menjaganya tidak berteriak bukan lagi ketipisan warnanya,
+     | melainkan ukurannya yang kecil dan warnanya yang sudah diredam sejak
+     | di palet.
+     */
     $gaya = match ($warna) {
-        'utama' => 'bg-utama-500/12 text-utama-200 ring-utama-400/30',
-        'sukses' => 'bg-sukses-500/12 text-sukses-200 ring-sukses-400/30',
-        'bahaya' => 'bg-bahaya-500/12 text-bahaya-200 ring-bahaya-400/30',
-        'waspada' => 'bg-waspada-500/12 text-waspada-200 ring-waspada-400/30',
-        default => 'bg-white/6 text-slate-300 ring-white/12',
+        'utama' => 'bg-utama-200 text-utama-800',
+        'sukses' => 'bg-sukses-200 text-sukses-800',
+        'bahaya' => 'bg-bahaya-200 text-bahaya-800',
+        'waspada' => 'bg-waspada-200 text-waspada-800',
+        default => 'bg-dasar-200 text-dasar-800',
     };
 @endphp
 
 <span {{ $attributes->merge([
-    'class' => "inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium
-                tracking-tight ring-1 ring-inset backdrop-blur-sm {$gaya}",
+    'class' => "inline-flex items-center border-2 border-dasar-900 px-2.5 py-0.5
+                text-xs font-bold uppercase tracking-wide {$gaya}",
 ]) }}>
     {{ $slot }}
 </span>
