@@ -148,7 +148,7 @@
     <x-kartu datar jarak="p-10" data-reveal data-reveal-jeda="80"
              class="mt-4 border-dashed border-dasar-900 text-center">
         <span aria-hidden="true"
-              class="mx-auto grid h-12 w-12 place-items-center  bg-sukses-500/10
+              class="mx-auto grid h-12 w-12 place-items-center  bg-sukses-200
                      text-sukses-600 ring-1 ring-inset ring-dasar-900">
             <svg viewBox="0 0 24 24" class="h-6 w-6" fill="currentColor">
                 <path d="M16.7 5.3a1 1 0 0 1 0 1.4l-7.5 7.5a1 1 0 0 1-1.4 0L3.3 9.7a1 1 0 1 1 1.4-1.4l3.8 3.8 6.8-6.8a1 1 0 0 1 1.4 0z"/>

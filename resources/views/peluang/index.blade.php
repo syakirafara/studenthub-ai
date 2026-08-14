@@ -7,7 +7,7 @@
 @php
     $kelasIsian = 'w-full  border border-dasar-900 bg-dasar-100 px-3 py-2 text-sm text-dasar-900
                    transition-colors duration-300 placeholder:text-dasar-500 hover:border-dasar-900
-                   focus:border-utama-400 focus:bg-dasar-50 focus:outline-none focus:ring-1 focus:ring-utama-500/30';
+                   focus:border-utama-400 focus:bg-dasar-50 focus:outline-none ';
 @endphp
 
 <div data-reveal>

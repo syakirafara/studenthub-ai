@@ -41,13 +41,13 @@
     };
 @endphp
 
-<a href="{{ route('peluang.index') }}" class="text-sm text-dasar-600 hover:text-utama-300">
+<a href="{{ route('peluang.index') }}" class="text-sm text-dasar-600 hover:text-utama-700">
     &larr; Kembali ke katalog
 </a>
 
 @if ($peluang->status !== 'disetujui')
     <div role="alert"
-         class="mt-4  border border-waspada-400/30 bg-waspada-500/10 px-4 py-3 text-sm text-waspada-700">
+         class="mt-4  border border-dasar-900 bg-waspada-200 px-4 py-3 text-sm text-waspada-700">
         Pratinjau admin. Peluang ini berstatus <strong>{{ $peluang->status }}</strong>
         dan belum tampil di katalog.
     </div>
@@ -210,7 +210,7 @@
                 @endauth
 
                 @guest
-                    <p class="flex items-start gap-2.5  bg-utama-500/8 px-3.5 py-3
+                    <p class="flex items-start gap-2.5  bg-utama-200 px-3.5 py-3
                               text-xs leading-relaxed text-dasar-700 ring-1 ring-inset ring-dasar-900">
                         <svg viewBox="0 0 24 24" class="mt-px h-4 w-4 shrink-0 text-utama-600"
                              fill="currentColor" aria-hidden="true">

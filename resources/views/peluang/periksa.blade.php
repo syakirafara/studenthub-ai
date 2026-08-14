@@ -88,7 +88,7 @@
                 </dl>
             </x-kartu>
 
-            <x-kartu datar class="mt-4 border-waspada-400/30 bg-waspada-500/10">
+            <x-kartu datar class="mt-4 border-dasar-900 bg-waspada-200">
                 <p class="text-sm font-medium text-waspada-700">Ada yang keliru atau kosong?</p>
                 <p class="mt-1 text-sm text-waspada-600">
                     Wajar &mdash; poster sering tidak mencantumkan semuanya, dan tulisan kecil kadang

@@ -30,7 +30,7 @@
         <x-kartu datar data-reveal data-reveal-jeda="100" class="space-y-5">
             <p class="flex items-center gap-2 text-[0.68rem] font-semibold uppercase
                       tracking-[0.14em] text-utama-600">
-                <span class="grid h-5 w-5 place-items-center  bg-utama-500/15
+                <span class="grid h-5 w-5 place-items-center  bg-utama-200
                              text-[0.65rem] ring-1 ring-inset ring-dasar-900">1</span>
                 Akun
             </p>
@@ -49,7 +49,7 @@
         <x-kartu datar data-reveal data-reveal-jeda="180" class="space-y-5">
             <p class="flex items-center gap-2 text-[0.68rem] font-semibold uppercase
                       tracking-[0.14em] text-utama-600">
-                <span class="grid h-5 w-5 place-items-center  bg-utama-500/15
+                <span class="grid h-5 w-5 place-items-center  bg-utama-200
                              text-[0.65rem] ring-1 ring-inset ring-dasar-900">2</span>
                 Profil akademik
             </p>

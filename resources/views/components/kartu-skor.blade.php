@@ -43,7 +43,7 @@
                 @foreach ($skor->terpenuhi as $butir)
                     <li data-reveal-anak class="flex gap-2.5 text-sm text-dasar-800">
                         <span class="mt-0.5 grid h-4 w-4 shrink-0 place-items-center 
-                                     bg-utama-500/18 text-utama-600" aria-hidden="true">
+                                     bg-utama-300 text-utama-600" aria-hidden="true">
                             <svg viewBox="0 0 20 20" class="h-2.5 w-2.5" fill="currentColor">
                                 <path d="M16.7 5.3a1 1 0 0 1 0 1.4l-7.5 7.5a1 1 0 0 1-1.4 0L3.3 9.7a1 1 0 1 1 1.4-1.4l3.8 3.8 6.8-6.8a1 1 0 0 1 1.4 0z"/>
                             </svg>

@@ -21,16 +21,26 @@
         @csrf
 
         <x-kartu datar data-reveal data-reveal-jeda="80">
-            <label for="poster" class="block text-sm font-medium text-dasar-800">Berkas poster</label>
+            <label for="poster"
+                   class="block text-xs font-bold uppercase tracking-wide text-dasar-700">
+                Berkas poster
+            </label>
 
+            {{-- Tombol "Choose File" di dalam isian berkas hanya bisa disentuh
+                 lewat awalan file:. Ia TIDAK mewarisi warna dari isian
+                 induknya, jadi warnanya harus disebut sendiri -- dan inilah
+                 yang paling sering terlewat saat tema berganti. --}}
             <input id="poster" name="poster" type="file" required
                    accept="image/jpeg,image/png,image/webp"
                    @error('poster') aria-invalid="true" aria-describedby="poster-error" @enderror
-                   class="mt-1 w-full  border border-dasar-900 bg-dasar-100 p-2 text-sm
-                          file:mr-3 file:rounded-lg file:border-0 file:bg-utama-500/12 file:px-3 file:py-1.5
-                          file:text-sm file:font-medium file:text-utama-200 hover:file:bg-utama-500/20">
+                   class="mt-2 w-full cursor-pointer border-[2.5px] border-dasar-900 bg-dasar-50 p-2
+                          text-sm text-dasar-700 shadow-keras
+                          file:mr-3 file:cursor-pointer file:border-[2.5px] file:border-dasar-900
+                          file:bg-utama-500 file:px-3 file:py-1.5 file:text-sm file:font-bold
+                          file:uppercase file:tracking-wide file:text-white
+                          hover:file:bg-utama-600">
 
-            <p class="mt-1 text-xs text-dasar-600">JPG, PNG, atau WebP. Maksimal 8 MB.</p>
+            <p class="mt-2 text-xs text-dasar-600">JPG, PNG, atau WebP. Maksimal 8 MB.</p>
 
             @error('poster')
                 <p id="poster-error" class="mt-1 text-sm text-bahaya-600">{{ $message }}</p>
@@ -56,7 +66,7 @@
                     <li class="flex items-start gap-3 text-sm leading-relaxed text-dasar-700">
                         <span aria-hidden="true"
                               class="mt-px grid h-5 w-5 shrink-0 place-items-center 
-                                     bg-utama-500/12 text-[0.65rem] font-semibold text-utama-600
+                                     bg-utama-200 text-[0.65rem] font-semibold text-utama-600
                                      ring-1 ring-inset ring-dasar-900">{{ $nomor + 1 }}</span>
                         {{ $langkah }}
                     </li>
@@ -75,7 +85,7 @@
         </div>
 
         <div data-penanda-tunggu hidden
-             class="flex items-center gap-3  border border-utama-400/30 bg-utama-500/12 px-4 py-3"
+             class="flex items-center gap-3  border border-dasar-900 bg-utama-200 px-4 py-3"
              role="status" aria-live="polite">
             <svg class="h-5 w-5 shrink-0 animate-spin text-utama-600" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                 <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" class="opacity-25"/>

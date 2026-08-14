@@ -6,7 +6,7 @@
 
 @php
     $hasilAi = $review?->hasil_ai ?? [];
-    $kelasIsian = 'mt-1 w-full  border border-dasar-900 px-3 py-2 text-sm focus:border-utama-400 focus:outline-none focus:ring-1 focus:ring-utama-500/30';
+    $kelasIsian = 'mt-1 w-full  border border-dasar-900 px-3 py-2 text-sm focus:border-utama-400 focus:outline-none ';
 
     // Menandai kolom yang sudah berubah dari bacaan AI, supaya admin melihat
     // apa saja yang sedang dia koreksi.
@@ -17,7 +17,7 @@
     };
 @endphp
 
-<a href="{{ route('admin.dasbor') }}" class="text-sm text-dasar-600 hover:text-utama-300">
+<a href="{{ route('admin.dasbor') }}" class="text-sm text-dasar-600 hover:text-utama-700">
     &larr; Kembali ke antrean
 </a>
 
@@ -28,7 +28,7 @@
 
 {{-- Peringatan kemungkinan duplikat --}}
 @if ($duplikat->isNotEmpty())
-    <div role="alert" class="mt-6  border border-waspada-400/30 bg-waspada-500/10 px-4 py-3">
+    <div role="alert" class="mt-6  border border-dasar-900 bg-waspada-200 px-4 py-3">
         <p class="text-sm font-medium text-waspada-700">
             Mirip dengan {{ $duplikat->count() }} peluang yang sudah ada
         </p>

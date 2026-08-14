@@ -60,12 +60,12 @@
      skor kecocokan tidak punya bahan apa pun untuk dibandingkan. --}}
 @if ($kelengkapan < 100)
     <x-kartu datar data-reveal data-reveal-jeda="80"
-             class="mt-6 border-waspada-400/30 bg-waspada-500/10">
+             class="mt-6 border-dasar-900 bg-waspada-200">
         <div class="flex flex-wrap items-center justify-between gap-4">
             <div class="flex items-start gap-3">
                 <span aria-hidden="true"
                       class="mt-0.5 grid h-8 w-8 shrink-0 place-items-center 
-                             bg-waspada-500/15 text-waspada-600 ring-1 ring-inset ring-dasar-900">
+                             bg-waspada-300 text-waspada-600 ring-1 ring-inset ring-dasar-900">
                     <svg viewBox="0 0 24 24" class="h-4 w-4" fill="currentColor">
                         <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm1 15h-2v-2h2v2Zm0-4h-2V7h2v6Z"/>
                     </svg>
@@ -75,7 +75,7 @@
                     <p class="text-sm font-semibold text-waspada-700">
                         Profilmu baru {{ $kelengkapan }}% lengkap
                     </p>
-                    <p class="mt-0.5 text-sm leading-relaxed text-waspada-300/90">
+                    <p class="mt-0.5 text-sm leading-relaxed text-waspada-800">
                         Skor kecocokan hanya seakurat data yang tersedia.
                         Lengkapi minat dan kemampuanmu dulu.
                     </p>
@@ -116,7 +116,7 @@
             @if ($kartu['tautan'])
                 <a href="{{ $kartu['tautan'] }}"
                    class="mt-1.5 inline-flex items-center gap-1 text-sm font-medium
-                          text-utama-600 transition-colors duration-300 hover:text-utama-200
+                          text-utama-600 transition-colors duration-300 hover:text-utama-800
                           after:absolute after:inset-0 focus:outline-none">
                     {{ $kartu['teksTautan'] }}
                     <span aria-hidden="true">&rarr;</span>
@@ -147,7 +147,7 @@
                 <div class="min-w-0">
                     <a href="{{ route('peluang.show', $item) }}"
                        class="font-medium text-dasar-900 transition-colors duration-300
-                              after:absolute after:inset-0 focus:outline-none group-hover:text-utama-100">
+                              after:absolute after:inset-0 focus:outline-none group-hover:underline">
                         {{ $item->judul }}
                     </a>
 

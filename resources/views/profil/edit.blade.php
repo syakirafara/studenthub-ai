@@ -16,9 +16,9 @@
     // kalau gayanya berubah, tidak ada satu pun yang tertinggal.
     $kotakPilihan = 'flex cursor-pointer items-center gap-3  border border-dasar-900
                      bg-dasar-100 px-3.5 py-2.5 text-sm text-dasar-800 transition-all duration-300
-                     hover:border-utama-400/40 hover:bg-dasar-200
-                     has-[:checked]:border-utama-500/60 has-[:checked]:bg-utama-500/12
-                     has-[:checked]:text-utama-100';
+                     hover:border-dasar-900 hover:bg-dasar-200
+                     has-[:checked]:border-dasar-900 has-[:checked]:bg-utama-200
+                     has-[:checked]:text-utama-800';
 @endphp
 
 <div class="mx-auto max-w-2xl">
