@@ -72,10 +72,48 @@
     </p>
     <h2 class="mt-1.5 font-judul text-2xl font-bold tracking-tight text-dasar-900">Pemakaian AI</h2>
     <p class="mt-1.5 max-w-2xl text-sm leading-relaxed text-dasar-600">
-        Angka ini dihitung dari tabel <code class=" bg-dasar-100 px-1.5 py-0.5 text-xs text-dasar-700">ai_logs</code>,
+        Angka ini dihitung dari tabel <code class="bg-dasar-100 px-1.5 py-0.5 text-xs text-dasar-700">ai_logs</code>,
         bukan perkiraan. Dipakai untuk menjelaskan efisiensi dan akurasi saat presentasi.
     </p>
 </div>
+
+@php
+    // Selisih antara skor yang tersimpan dan skor yang benar-benar lewat AI.
+    $skorSeeder = $ai['skor_tersimpan'] - $ai['skor_dari_ai'];
+@endphp
+
+@if ($skorSeeder > 0)
+    {{-- Keterangan ini hanya muncul selama masih ada data contoh. Begitu
+         seluruh skor berasal dari panggilan AI sungguhan, ia hilang sendiri
+         tanpa perlu dihapus siapa pun. --}}
+    <div data-reveal
+         class="mt-4 flex items-start gap-3 border-[2.5px] border-dasar-900 bg-waspada-200
+                px-5 py-4 shadow-keras">
+        <span aria-hidden="true"
+              class="mt-0.5 grid h-5 w-5 shrink-0 place-items-center border-2 border-dasar-900
+                     bg-waspada-400 text-dasar-900">
+            <svg viewBox="0 0 20 20" class="h-3 w-3" fill="currentColor">
+                <path d="M10 2a8 8 0 1 0 0 16 8 8 0 0 0 0-16zm1 11H9v-2h2v2zm0-4H9V5h2v4z"/>
+            </svg>
+        </span>
+
+        <div class="text-sm text-waspada-800">
+            <p class="font-bold uppercase tracking-wide">Kenapa jumlah panggilan terlihat sedikit</p>
+            <p class="mt-1 leading-relaxed">
+                Ada <strong>{{ number_format($ai['skor_tersimpan'], 0, ',', '.') }}</strong> skor kecocokan
+                tersimpan, tetapi hanya <strong>{{ number_format($ai['skor_dari_ai'], 0, ',', '.') }}</strong>
+                yang berasal dari panggilan AI. Sisanya
+                (<strong>{{ number_format($skorSeeder, 0, ',', '.') }}</strong>) adalah data contoh yang
+                ditulis langsung ke basis data oleh seeder &mdash; sengaja tidak melewati AI supaya
+                mengisi data contoh tidak menghabiskan kuota.
+            </p>
+            <p class="mt-1.5 leading-relaxed">
+                Karena itu persentase penghematan dan tingkat keberhasilan di atas
+                <strong>belum bermakna</strong> sampai jumlah panggilan sungguhan bertambah banyak.
+            </p>
+        </div>
+    </div>
+@endif
 
 <div data-reveal-grup class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
     @foreach ([

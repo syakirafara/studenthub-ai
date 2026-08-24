@@ -67,10 +67,14 @@ Untuk setiap peluang, AI membandingkan **syaratnya** dengan **profil mahasiswa**
 
 ### Dua model, dipilih sesuai berat tugas
 
-| Peran | Model | Untuk | Waktu terukur |
-|---|---|---|---|
-| berat | `gemini-3.6-flash` | Membaca poster — tugas penglihatan, tulisan poster sering kecil | ± 2.400 ms |
-| ringan | `gemini-3.5-flash-lite` | Skor kecocokan — hanya membandingkan teks | ± 1.200 ms |
+| Peran | Model | Untuk |
+|---|---|---|
+| berat | `gemini-3.6-flash` | Membaca poster — tugas penglihatan, tulisan poster sering kecil |
+| ringan | `gemini-3.5-flash-lite` | Skor kecocokan — hanya membandingkan teks |
+
+**Lama pemanggilan sengaja tidak dicantumkan di sini.** Angka itu berubah mengikuti ukuran poster dan keadaan jaringan, dan sampel yang tercatat belum cukup untuk menyebut rata-rata. Yang tercatat sejauh ini: satu pembacaan poster memakan **30,5 detik**.
+
+Karena itu tampilan tidak menuliskan angka tetap. Halaman unggah dan halaman rincian membaca langsung dari `ai_logs`, dan **mengaku "masih perkiraan" selama sampelnya di bawah tiga** — lihat `AiLog::perkiraan()`. Janji waktu yang meleset di layar sendiri lebih merusak kepercayaan daripada angka besar yang benar.
 
 Versinya **dipatok**, bukan memakai alias `gemini-flash-latest`, agar hasil dapat diulang: penilai yang menjalankan proyek ini bulan depan mendapat perilaku yang sama.
 
@@ -104,6 +108,8 @@ Diuji dengan sengaja memberi gambar yang **bukan** poster; sistem menjawab *"Inf
 Setiap pembacaan AI disimpan apa adanya di tabel `extraction_reviews`. Saat admin memverifikasi, sistem membandingkan **10 kolom** antara bacaan AI dan hasil akhir, lalu mencatat berapa yang dikoreksi **dan kolom mana saja**.
 
 **Hasil verifikasi pertama: akurasi 80%** (2 dari 10 kolom dikoreksi).
+
+> **Ini baru satu poster.** Angka dari satu sampel belum bisa disebut pengukuran, dan disebutkan di sini apa adanya justru supaya tidak terbaca lebih meyakinkan daripada yang sebenarnya. Target sebelum pengumpulan: 25–30 poster.
 
 Kedua kolom yang meleset menghasilkan perbaikan nyata pada instruksi AI:
 
@@ -202,12 +208,13 @@ Dua tabel terakhir tidak dibutuhkan untuk menjalankan fitur, tetapi ada dengan s
 php artisan test
 ```
 
-**37 pengujian, 70 pemeriksaan, seluruhnya lolos.** Dijalankan di atas SQLite di memori, sehingga tidak menyentuh basis data pengembangan dan tidak memerlukan penyiapan apa pun.
+**42 pengujian, 84 pemeriksaan, seluruhnya lolos.** Dijalankan di atas SQLite di memori, sehingga tidak menyentuh basis data pengembangan dan tidak memerlukan penyiapan apa pun.
 
 | Berkas | Yang dijaga |
 |---|---|
 | `tests/Feature/AlurUtamaTest.php` | Alur produk dari ujung ke ujung: katalog, penyaringan, penyimpanan, pendaftaran akun, dan verifikasi admin |
 | `tests/Feature/HalamanTergambarTest.php` | Setiap halaman benar-benar tergambar tanpa galat, termasuk pada keadaan kosong dan keadaan tepi |
+| `tests/Unit/PerkiraanWaktuTest.php` | Perkiraan lama panggilan AI hanya disebut terukur setelah sampelnya cukup |
 
 Beberapa pengujian sengaja menjaga bug yang **pernah benar-benar terjadi**, supaya tidak kembali diam-diam:
 

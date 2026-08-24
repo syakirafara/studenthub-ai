@@ -73,9 +73,20 @@
                 @endforeach
             </ol>
 
-            <p class="mt-4 border-t border-dasar-900 pt-3 text-xs text-dasar-600">
-                Pembacaan memakan waktu sekitar <strong class="text-dasar-700">10&ndash;20 detik</strong>.
+            {{-- Angka waktunya DIHITUNG dari ai_logs, bukan ditulis tetap.
+                 Selama sampelnya masih sedikit, halaman ini mengaku bahwa
+                 angkanya baru perkiraan -- bukan berlagak tahu. --}}
+            <p class="mt-4 border-t-2 border-dashed border-dasar-300 pt-3 text-xs text-dasar-600">
+                Pembacaan memakan waktu
+                <strong class="text-dasar-800">{{ $perkiraanWaktu['teks'] }}</strong>.
                 Jangan tutup halaman ini.
+                <span class="mt-1 block text-dasar-500">
+                    @if ($perkiraanWaktu['terukur'])
+                        Dihitung dari {{ $perkiraanWaktu['jumlah'] }} pembacaan yang sudah tercatat.
+                    @else
+                        Masih perkiraan &mdash; baru {{ $perkiraanWaktu['jumlah'] }} pembacaan yang tercatat.
+                    @endif
+                </span>
             </p>
         </x-kartu>
 
@@ -93,7 +104,9 @@
             </svg>
             <div class="text-sm text-utama-700">
                 <p class="font-medium">Sedang membaca posternya...</p>
-                <p class="text-utama-700">Biasanya 10&ndash;20 detik. Jangan tutup atau segarkan halaman.</p>
+                <p class="text-utama-700">
+                    Biasanya {{ $perkiraanWaktu['teks'] }}. Jangan tutup atau segarkan halaman.
+                </p>
             </div>
         </div>
 
@@ -102,7 +115,7 @@
 
 @push('skrip')
 <script>
-    // Pembacaan AI memakan 10-20 detik. Tanpa penanda, halaman terlihat
+    // Pembacaan AI memakan puluhan detik. Tanpa penanda, halaman terlihat
     // membeku dan pengguna cenderung menekan tombol berulang kali -- yang
     // berarti beberapa kali panggilan AI untuk satu poster yang sama.
     document.querySelector('[data-form-unggah]')?.addEventListener('submit', (e) => {

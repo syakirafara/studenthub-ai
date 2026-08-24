@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AiLog;
 use App\Models\ExtractionReview;
 use App\Models\Opportunity;
 use App\Services\LayananAI;
@@ -23,7 +24,9 @@ class UnggahPosterController extends Controller
      */
     public function create(): View
     {
-        return view('peluang.unggah');
+        return view('peluang.unggah', [
+            'perkiraanWaktu' => AiLog::perkiraan('ekstraksi_poster', '10 sampai 40 detik'),
+        ]);
     }
 
     /**

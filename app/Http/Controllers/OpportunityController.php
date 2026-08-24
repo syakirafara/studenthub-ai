@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AiLog;
 use App\Models\Opportunity;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -85,6 +86,11 @@ class OpportunityController extends Controller
             'skor' => $request->user()
                 ? $peluang->matches()->where('user_id', $request->user()->id)->first()
                 : null,
+
+            // Lama perhitungan diambil dari catatan panggilan yang sudah
+            // terjadi, bukan angka tetap di dalam tampilan. Lihat
+            // AiLog::perkiraan() untuk alasannya.
+            'perkiraanWaktu' => AiLog::perkiraan('skor_kecocokan', 'beberapa detik'),
         ]);
     }
 

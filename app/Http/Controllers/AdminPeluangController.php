@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\AiLog;
 use App\Models\ExtractionReview;
 use App\Models\Opportunity;
+use App\Models\OpportunityMatch;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -177,6 +178,24 @@ class AdminPeluangController extends Controller
             'token_total' => (int) (AiLog::sum('token_masuk') + AiLog::sum('token_keluar')),
             'poster_ditinjau' => $ditinjau,
             'akurasi_persen' => $totalKolom > 0 ? (int) round(($totalKolom - $totalKoreksi) / $totalKolom * 100) : null,
+
+            /*
+             | Dua angka di bawah ini ada untuk MENJELASKAN kejanggalan, bukan
+             | untuk dipamerkan.
+             |
+             | Skor kecocokan bawaan seeder ditulis langsung ke tabel dan tidak
+             | pernah melewati LayananAI -- memang disengaja, agar mengisi data
+             | contoh tidak membakar kuota AI. Akibatnya jumlah skor tersimpan
+             | jauh melebihi jumlah panggilan AI yang tercatat, dan itu terlihat
+             | seperti kesalahan padahal bukan.
+             |
+             | Selisihnya ditampilkan terang-terangan di dasbor. Angka yang
+             | tampak janggal tanpa keterangan akan dibaca sebagai kekeliruan;
+             | angka janggal yang dijelaskan sendiri justru menunjukkan bahwa
+             | sistemnya dipahami.
+             */
+            'skor_tersimpan' => OpportunityMatch::count(),
+            'skor_dari_ai' => AiLog::where('jenis', 'skor_kecocokan')->count(),
         ];
     }
 }

@@ -246,7 +246,13 @@
                         <x-tombol class="w-full" data-tombol-skor>Hitung kecocokan</x-tombol>
                     </form>
 
-                    <p class="text-xs text-dasar-500">Sekitar 2 detik. Hasilnya disimpan, jadi tidak dihitung dua kali.</p>
+                    <p class="text-xs text-dasar-500">
+                        Perhitungan memakan {{ $perkiraanWaktu['teks'] }}. Hasilnya disimpan,
+                        jadi tidak dihitung dua kali.
+                        @unless ($perkiraanWaktu['terukur'])
+                            <span class="block">Angka ini masih perkiraan.</span>
+                        @endunless
+                    </p>
                 </x-kartu>
             @endif
         @endauth
@@ -256,7 +262,7 @@
 
 @push('skrip')
 <script>
-    // Perhitungan makan sekitar 2 detik. Tanpa penanda, tombolnya mudah
+    // Perhitungan makan beberapa detik. Tanpa penanda, tombolnya mudah
     // ditekan berulang -- dan tiap tekanan berarti satu panggilan AI lagi.
     document.querySelector('[data-form-skor]')?.addEventListener('submit', (e) => {
         const tombol = e.currentTarget.querySelector('[data-tombol-skor]');
