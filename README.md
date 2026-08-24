@@ -28,7 +28,7 @@ Informasi lomba, beasiswa, dan magang untuk mahasiswa tersebar di puluhan akun I
 3. **Syarat tidak jelas** — poster jarang menjelaskan siapa yang boleh ikut, sehingga banyak yang batal mendaftar karena ragu memenuhi syarat.
 4. **Tidak lengkap** — poster menarik, tetapi detailnya harus dicari sendiri.
 
-> **Catatan kejujuran:** empat poin di atas adalah **hipotesis masalah** yang disusun dari pengalaman sendiri sebagai mahasiswa, bukan hasil survei berstatistik. Validasi lapangan berupa audit terhadap postingan akun penyedia informasi dijadwalkan sebelum pengumpulan akhir, dan hasilnya akan dilampirkan di `docs/RISET.md`.
+> **Catatan kejujuran:** empat poin di atas adalah **hipotesis masalah** yang disusun dari pengalaman sendiri sebagai mahasiswa, bukan hasil survei berstatistik. Yang sudah ada buktinya baru poin ke-3: dari **20 poster Instagram sungguhan** yang diproses sistem ini, sebagian tidak mencantumkan tingkat kegiatan maupun syarat peserta secara jelas — lihat bagian akurasi di bawah. Audit lapangan yang lebih lengkap dilampirkan di `docs/RISET.md`.
 
 ---
 
@@ -72,7 +72,7 @@ Untuk setiap peluang, AI membandingkan **syaratnya** dengan **profil mahasiswa**
 | berat | `gemini-3.6-flash` | Membaca poster — tugas penglihatan, tulisan poster sering kecil |
 | ringan | `gemini-3.5-flash-lite` | Skor kecocokan — hanya membandingkan teks |
 
-**Lama pemanggilan sengaja tidak dicantumkan di sini.** Angka itu berubah mengikuti ukuran poster dan keadaan jaringan, dan sampel yang tercatat belum cukup untuk menyebut rata-rata. Yang tercatat sejauh ini: satu pembacaan poster memakan **30,5 detik**.
+**Lama pembacaan poster, dari 19 panggilan yang berhasil:** rata-rata **21,1 detik**, tercepat 12,1 detik, terlama 76,3 detik. Sebarannya lebar karena bergantung pada ukuran poster dan keadaan jaringan.
 
 Karena itu tampilan tidak menuliskan angka tetap. Halaman unggah dan halaman rincian membaca langsung dari `ai_logs`, dan **mengaku "masih perkiraan" selama sampelnya di bawah tiga** — lihat `AiLog::perkiraan()`. Janji waktu yang meleset di layar sendiri lebih merusak kepercayaan daripada angka besar yang benar.
 
@@ -107,16 +107,26 @@ Diuji dengan sengaja memberi gambar yang **bukan** poster; sistem menjawab *"Inf
 
 Setiap pembacaan AI disimpan apa adanya di tabel `extraction_reviews`. Saat admin memverifikasi, sistem membandingkan **10 kolom** antara bacaan AI dan hasil akhir, lalu mencatat berapa yang dikoreksi **dan kolom mana saja**.
 
-**Hasil verifikasi pertama: akurasi 80%** (2 dari 10 kolom dikoreksi).
+**Hasil dari 20 poster Instagram sungguhan: akurasi 97,5%** — 195 dari 200 kolom benar tanpa koreksi, dan **16 dari 20 poster dibaca sempurna**.
 
-> **Ini baru satu poster.** Angka dari satu sampel belum bisa disebut pengukuran, dan disebutkan di sini apa adanya justru supaya tidak terbaca lebih meyakinkan daripada yang sebenarnya. Target sebelum pengumpulan: 25–30 poster.
+### Alat ukurnya sendiri pernah salah
 
-Kedua kolom yang meleset menghasilkan perbaikan nyata pada instruksi AI:
+Angka pertama yang dilaporkan sistem ini adalah **92%**, dan angka itu keliru.
 
-| Kolom | Sebabnya | Perbaikan |
-|---|---|---|
-| `deadline` | Poster punya **tiga gelombang** pendaftaran, bukan satu tanggal | Instruksi ditambah: ambil tanggal penutupan gelombang terakhir |
-| `link` | Poster menulis `contoh.or.id` tanpa `https://` | Instruksi ditambah: tulis alamat lengkap |
+Penyebabnya bukan AI, melainkan cara membandingkannya. Bacaan AI `"2026-08-19"` dibandingkan mentah-mentah dengan nilai basis data `"2026-08-18T17:00:00.000000Z"` — dua tulisan berbeda untuk **tanggal yang sama persis**, sebab yang kedua disimpan dalam UTC sementara yang pertama tidak. Akibatnya `deadline` tercatat "dikoreksi" pada **12 poster yang sebenarnya dibaca benar**.
+
+Perbaikannya: kolom bertipe tanggal kini diseragamkan ke `YYYY-MM-DD` di zona Asia/Jakarta sebelum dibandingkan (`AdminPeluangController::sama()`), dan perilakunya dikunci empat pengujian di `tests/Unit/PembandingAkurasiTest.php`.
+
+> **Alat ukur yang salah lebih berbahaya daripada tidak mengukur sama sekali**, karena hasilnya tetap terlihat meyakinkan. Kalau tidak diperiksa, karya ini akan mengaku 92% padahal sebenarnya 97,5% — dan menyalahkan AI atas kesalahan kodenya sendiri.
+
+### Lima kesalahan yang tersisa memang nyata
+
+| Kolom | Salah di | Sebabnya | Perbaikan |
+|---|---|---|---|
+| `deadline` | 4 dari 20 | Instruksi berbunyi *"gunakan tahun berjalan"* — perintah yang **mustahil dipatuhi**, karena model bahasa tidak punya jam. Ia jatuh ke tahun masa pelatihannya, sehingga poster 2026 dibaca 2024 | Tanggal hari ini kini dikirim di dalam instruksi, ditambah aturan: hasil yang jatuh di masa lalu tanpa tahun tertulis berarti tahunnya keliru |
+| `link` | 1 dari 20 | Poster menulis `contoh.or.id` tanpa `https://` | Instruksi ditambah: tulis alamat lengkap |
+
+Delapan kolom lainnya — judul, penyelenggara, kategori, deskripsi, biaya, nominal, tingkat, syarat — **tidak pernah sekali pun dikoreksi** dalam 20 poster.
 
 Siklus **ukur → temukan pola → perbaiki** ini berjalan dari data sistem sendiri, bukan dari perkiraan.
 
@@ -208,13 +218,14 @@ Dua tabel terakhir tidak dibutuhkan untuk menjalankan fitur, tetapi ada dengan s
 php artisan test
 ```
 
-**42 pengujian, 84 pemeriksaan, seluruhnya lolos.** Dijalankan di atas SQLite di memori, sehingga tidak menyentuh basis data pengembangan dan tidak memerlukan penyiapan apa pun.
+**46 pengujian, 88 pemeriksaan, seluruhnya lolos.** Dijalankan di atas SQLite di memori, sehingga tidak menyentuh basis data pengembangan dan tidak memerlukan penyiapan apa pun.
 
 | Berkas | Yang dijaga |
 |---|---|
 | `tests/Feature/AlurUtamaTest.php` | Alur produk dari ujung ke ujung: katalog, penyaringan, penyimpanan, pendaftaran akun, dan verifikasi admin |
 | `tests/Feature/HalamanTergambarTest.php` | Setiap halaman benar-benar tergambar tanpa galat, termasuk pada keadaan kosong dan keadaan tepi |
 | `tests/Unit/PerkiraanWaktuTest.php` | Perkiraan lama panggilan AI hanya disebut terukur setelah sampelnya cukup |
+| `tests/Unit/PembandingAkurasiTest.php` | Tanggal yang sama tidak boleh terhitung sebagai koreksi hanya karena beda bentuk simpanan |
 
 Beberapa pengujian sengaja menjaga bug yang **pernah benar-benar terjadi**, supaya tidak kembali diam-diam:
 

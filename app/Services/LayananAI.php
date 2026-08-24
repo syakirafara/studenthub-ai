@@ -49,15 +49,35 @@ class LayananAI
      */
     public function bacaPoster(string $isiGambar, string $tipeGambar, ?int $userId = null): array
     {
-        $petunjuk = <<<'TEKS'
+        /*
+         | Tanggal hari ini WAJIB disebutkan di dalam instruksi.
+         |
+         | Versi sebelumnya menulis "gunakan tahun berjalan" -- perintah yang
+         | mustahil dipatuhi, karena model bahasa tidak punya jam. Ia tidak
+         | tahu sekarang tahun berapa, sehingga jatuh ke tahun masa
+         | pelatihannya. Akibatnya 4 dari 20 poster dibaca sebagai 2024
+         | padahal acaranya 2026.
+         |
+         | Diukur dari extraction_reviews, bukan diduga.
+         */
+        $hariIni = now()->translatedFormat('l, j F Y');
+        $tahunIni = now()->year;
+
+        $petunjuk = <<<TEKS
         Kamu membaca poster informasi peluang mahasiswa Indonesia (lomba, beasiswa, atau magang).
+
+        HARI INI: {$hariIni}. Tahun berjalan adalah {$tahunIni}.
 
         Ambil datanya sesuai skema yang diberikan. Aturan:
 
         - Tulis apa adanya sesuai poster. JANGAN mengarang data yang tidak tertulis.
         - Kalau sebuah keterangan tidak ada di poster, isi null (atau daftar kosong).
-        - deadline: format YYYY-MM-DD. Kalau posternya hanya menulis "31 Agustus"
-          tanpa tahun, gunakan tahun berjalan. Kalau tidak ada tanggal sama sekali, null.
+        - deadline: format YYYY-MM-DD. Kalau posternya menulis tahun, PAKAI TAHUN ITU.
+          Kalau posternya hanya menulis "31 Agustus" tanpa tahun, pakai {$tahunIni}.
+          Kalau tidak ada tanggal sama sekali, null.
+        - deadline TIDAK BOLEH berada di masa lalu kecuali posternya memang menulis
+          tahun yang sudah lewat. Kalau hasil bacaanmu jatuh sebelum hari ini padahal
+          poster tidak menyebut tahun, berarti tahunnya keliru -- pakai {$tahunIni}.
         - deadline bila ada beberapa gelombang pendaftaran: ambil tanggal PENUTUPAN
           GELOMBANG TERAKHIR, karena itulah kesempatan terakhir seseorang bisa mendaftar.
           Jangan mengosongkannya hanya karena tanggalnya lebih dari satu.

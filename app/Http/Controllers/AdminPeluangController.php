@@ -8,6 +8,7 @@ use App\Models\Opportunity;
 use App\Models\OpportunityMatch;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
@@ -18,6 +19,9 @@ class AdminPeluangController extends Controller
      * Kolom yang dibandingkan antara bacaan AI dan hasil akhir admin.
      * Dari sinilah angka akurasi AI berasal.
      */
+    /** Kolom yang harus dibandingkan sebagai TANGGAL, bukan sebagai teks. */
+    private const KOLOM_TANGGAL = ['deadline'];
+
     private const KOLOM_DINILAI = [
         'judul', 'penyelenggara', 'kategori', 'deskripsi',
         'deadline', 'biaya', 'nominal_biaya', 'tingkat', 'link', 'syarat',
@@ -134,15 +138,7 @@ class AdminPeluangController extends Controller
         $dikoreksi = [];
 
         foreach (self::KOLOM_DINILAI as $kolom) {
-            $sebelum = $hasilAi[$kolom] ?? null;
-            $sesudah = $hasilFinal[$kolom] ?? null;
-
-            // Tanggal dan larik perlu disamakan bentuknya dulu, supaya
-            // "2026-09-20" tidak dianggap berbeda dari objek tanggal.
-            $sebelum = is_array($sebelum) ? json_encode($sebelum) : (string) $sebelum;
-            $sesudah = is_array($sesudah) ? json_encode($sesudah) : (string) $sesudah;
-
-            if (trim($sebelum) !== trim($sesudah)) {
+            if (! $this->sama($kolom, $hasilAi[$kolom] ?? null, $hasilFinal[$kolom] ?? null)) {
                 $dikoreksi[] = $kolom;
             }
         }
@@ -153,6 +149,50 @@ class AdminPeluangController extends Controller
             'field_dikoreksi' => $dikoreksi,
             'reviewed_by' => $adminId,
         ]);
+    }
+
+    /**
+     * Apakah bacaan AI dan hasil akhir admin dianggap SAMA untuk satu kolom.
+     *
+     * Kolom tanggal disamakan ke bentuk YYYY-MM-DD di zona waktu Jakarta
+     * sebelum dibandingkan. Tanpa ini, "2026-08-19" dari AI dibandingkan
+     * mentah-mentah dengan "2026-08-18T17:00:00.000000Z" dari basis data --
+     * dua tulisan berbeda untuk TANGGAL YANG SAMA PERSIS, karena yang kedua
+     * disimpan dalam UTC.
+     *
+     * Bug ini membuat deadline tercatat "dikoreksi" pada 12 dari 20 poster
+     * yang sebenarnya dibaca dengan benar, dan menurunkan angka akurasi dari
+     * 97,5% menjadi 92%. Alat ukur yang salah lebih berbahaya daripada tidak
+     * mengukur sama sekali, karena hasilnya tetap terlihat meyakinkan.
+     */
+    private function sama(string $kolom, mixed $sebelum, mixed $sesudah): bool
+    {
+        if (in_array($kolom, self::KOLOM_TANGGAL, true)) {
+            return $this->keTanggal($sebelum) === $this->keTanggal($sesudah);
+        }
+
+        $sebelum = is_array($sebelum) ? json_encode($sebelum) : (string) $sebelum;
+        $sesudah = is_array($sesudah) ? json_encode($sesudah) : (string) $sesudah;
+
+        return trim($sebelum) === trim($sesudah);
+    }
+
+    /**
+     * Menyeragamkan apa pun bentuknya menjadi "YYYY-MM-DD", atau null.
+     */
+    private function keTanggal(mixed $nilai): ?string
+    {
+        if ($nilai === null || $nilai === '') {
+            return null;
+        }
+
+        try {
+            return Carbon::parse($nilai)->timezone(config('app.timezone'))->toDateString();
+        } catch (\Throwable) {
+            // Bukan tanggal yang bisa dibaca -- bandingkan sebagai teks biasa
+            // daripada menganggapnya kosong.
+            return trim((string) $nilai);
+        }
     }
 
     /**
