@@ -261,7 +261,11 @@ Disebutkan terang-terangan karena pengguna dan penilai berhak tahu.
 2. **Belum ada pengingat deadline otomatis.** Kebutuhan ini muncul di analisis masalah dan diakui nyata, tetapi memerlukan antrean dan layanan pengiriman yang tidak sebanding dengan waktu pengembangan. Sebagai gantinya tersedia hitung mundur di setiap kartu dan daftar deadline terdekat di Beranda.
 3. **Deteksi kemiripan judul dihitung di sisi PHP.** Ringan untuk ratusan baris; pada puluhan ribu baris langkah berikutnya adalah indeks pencarian teks penuh.
 4. **Penyuntingan syarat oleh admin belum tersedia.** Bila hasil bacaan syarat keliru berat, jalan yang tersedia saat ini adalah menolak unggahan disertai alasan.
-5. **Angka akurasi masih dari satu poster.** Akan bertambah bermakna seiring bertambahnya poster yang diverifikasi.
+5. **Kuota paket gratis Gemini adalah batas yang jebol paling awal — dan ini sudah dialami, bukan diperkirakan.** Pada percobaan pengumpulan data, kuota harian model penglihatan habis setelah **21 panggilan dalam satu hari**, dan sisa unggahan harus menunggu kuota disetel ulang keesokan harinya.
+
+   Ini menjawab pertanyaan *"apa yang jebol duluan?"* dengan angka nyata dari catatan sistem, bukan dengan perkiraan. Ketika itu terjadi, sistem tidak rusak: galat aslinya disimpan di `ai_logs` untuk diagnosis, dan pengguna menerima kalimat *"Kuota AI hari ini sudah habis. Coba lagi besok."* dalam bahasa Indonesia.
+
+   Tiga cara menaikkannya, berurutan dari yang paling murah: menyimpan hasil agar poster yang sama tidak diproses ulang (sudah berjalan), membatasi unggahan per pengguna per hari, lalu berpindah ke paket berbayar. Karena seluruh pemanggilan AI terkumpul di satu lapisan layanan, perpindahan itu tidak mengubah kode fitur mana pun.
 
 ---
 
