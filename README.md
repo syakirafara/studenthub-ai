@@ -60,6 +60,7 @@ Untuk setiap peluang, AI membandingkan **syaratnya** dengan **profil mahasiswa**
 | **Profil** | Minat dan kemampuan sebagai bahan perhitungan kecocokan |
 | **Dasbor Admin** | Antrean verifikasi, deteksi kemiripan, dan pengukuran akurasi AI |
 | **Beranda Saya** | Rekomendasi berdasarkan skor tertinggi + pengingat deadline |
+| **Transparansi AI** | Halaman publik di `/transparansi` — instruksi asli, skema JSON, akurasi, dan kolom mana yang masih sering salah |
 
 ---
 
@@ -135,6 +136,20 @@ Siklus **ukur → temukan pola → perbaiki** ini berjalan dari data sistem send
 Skor kecocokan disimpan per pasangan pengguna–peluang, dijaga batasan unik di basis data. Permintaan berikutnya dilayani dari hasil tersimpan tanpa memanggil AI, dan tetap dicatat dengan status `dari_cache` — sehingga persentase penghematan dapat dihitung dan ditampilkan di Dasbor Admin.
 
 Manfaat lainnya: skor tidak berubah-ubah setiap halaman disegarkan.
+
+---
+
+### Semuanya bisa diperiksa tanpa akun
+
+Halaman **`/transparansi`** terbuka untuk umum dan menampilkan:
+
+- **instruksi asli** yang dikirim ke kedua panggilan AI — diambil langsung dari `LayananAI`, bukan dari salinan yang bisa usang diam-diam
+- **skema JSON** yang dipaksakan ke model
+- **akurasi terkini**, dihitung saat halaman dibuka dari `extraction_reviews`
+- **kolom mana yang masih sering salah**, beserta berapa kali — bukan hanya yang sudah benar
+- **batas yang sudah dialami**, termasuk kuota harian yang pernah habis
+
+Halaman ini dibuat karena seluruh bukti pemakaian AI sebelumnya hanya terlihat di Dasbor Admin, sementara penilai tidak punya akun admin. **Bukti yang tidak bisa dilihat sama saja dengan bukti yang tidak ada.**
 
 ---
 
@@ -218,7 +233,7 @@ Dua tabel terakhir tidak dibutuhkan untuk menjalankan fitur, tetapi ada dengan s
 php artisan test
 ```
 
-**46 pengujian, 88 pemeriksaan, seluruhnya lolos.** Dijalankan di atas SQLite di memori, sehingga tidak menyentuh basis data pengembangan dan tidak memerlukan penyiapan apa pun.
+**50 pengujian, 95 pemeriksaan, seluruhnya lolos.** Dijalankan di atas SQLite di memori, sehingga tidak menyentuh basis data pengembangan dan tidak memerlukan penyiapan apa pun.
 
 | Berkas | Yang dijaga |
 |---|---|

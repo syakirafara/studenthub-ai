@@ -16,7 +16,7 @@ class LayananAI
      * bentuk ini. Susunannya sengaja dibuat sama persis dengan kolom-kolom
      * tabel opportunities, supaya hasilnya bisa langsung disimpan.
      */
-    private const SKEMA_PELUANG = [
+    public const SKEMA_PELUANG = [
         'type' => 'OBJECT',
         'properties' => [
             'judul' => ['type' => 'STRING'],
@@ -47,7 +47,15 @@ class LayananAI
     /**
      * Membaca satu poster dan mengubahnya menjadi data terstruktur.
      */
-    public function bacaPoster(string $isiGambar, string $tipeGambar, ?int $userId = null): array
+    /**
+     * Instruksi yang dikirim bersama gambar poster.
+     *
+     * Dibuat publik supaya halaman Transparansi AI dapat menampilkan
+     * instruksi YANG BENAR-BENAR DIPAKAI, bukan salinannya. Salinan akan
+     * usang diam-diam begitu instruksi aslinya diubah, dan halaman yang
+     * mengaku transparan justru jadi menyesatkan.
+     */
+    public function petunjukPoster(): string
     {
         /*
          | Tanggal hari ini WAJIB disebutkan di dalam instruksi.
@@ -90,6 +98,13 @@ class LayananAI
         - deskripsi: ringkas 1-2 kalimat, bahasa Indonesia.
         TEKS;
 
+        return $petunjuk;
+    }
+
+    public function bacaPoster(string $isiGambar, string $tipeGambar, ?int $userId = null): array
+    {
+        $petunjuk = $this->petunjukPoster();
+
         return $this->panggil(
             jenis: 'ekstraksi_poster',
             model: config('services.gemini.model'),
@@ -108,7 +123,7 @@ class LayananAI
     /**
      * Bentuk hasil penilaian kecocokan.
      */
-    private const SKEMA_KECOCOKAN = [
+    public const SKEMA_KECOCOKAN = [
         'type' => 'OBJECT',
         'properties' => [
             'skor' => ['type' => 'INTEGER'],
@@ -126,7 +141,13 @@ class LayananAI
      * lebih sederhana daripada membaca gambar. Dua kali lebih cepat, dan
      * hemat kuota harian.
      */
-    public function hitungKecocokan(array $profil, array $syarat, ?int $userId = null): array
+    /**
+     * Instruksi penilaian kecocokan, beserta contoh isinya.
+     *
+     * Sama seperti petunjukPoster(): dibuat publik agar halaman
+     * Transparansi AI menampilkan instruksi yang benar-benar dipakai.
+     */
+    public function petunjukKecocokan(array $profil, array $syarat): string
     {
         $petunjuk = <<<TEKS
         Nilai seberapa cocok seorang mahasiswa dengan syarat sebuah peluang.
@@ -173,6 +194,13 @@ class LayananAI
         skor yang terlalu murah hati membuat mahasiswa mendaftar lalu tersingkir
         di tahap administrasi, dan itu lebih merugikan daripada skor rendah yang jujur.
         TEKS;
+
+        return $petunjuk;
+    }
+
+    public function hitungKecocokan(array $profil, array $syarat, ?int $userId = null): array
+    {
+        $petunjuk = $this->petunjukKecocokan($profil, $syarat);
 
         $hasil = $this->panggil(
             jenis: 'skor_kecocokan',

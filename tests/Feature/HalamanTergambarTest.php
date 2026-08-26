@@ -66,6 +66,7 @@ class HalamanTergambarTest extends TestCase
         return [
             'depan' => ['depan'],
             'katalog' => ['peluang.index'],
+            'transparansi' => ['transparansi'],
             'masuk' => ['masuk'],
             'daftar' => ['daftar'],
         ];
@@ -179,6 +180,32 @@ class HalamanTergambarTest extends TestCase
         $this->actingAs(User::factory()->create(['role' => 'admin']))
             ->get(route('admin.dasbor'))
             ->assertOk();
+    }
+
+    public function test_transparansi_tergambar_walau_belum_ada_data_ai(): void
+    {
+        // Keadaan awal: belum ada poster diverifikasi sama sekali. Seluruh
+        // angka bernilai kosong, dan halaman harus menanganinya tanpa
+        // membagi dengan nol.
+        $this->get(route('transparansi'))->assertOk();
+    }
+
+    public function test_transparansi_menampilkan_instruksi_asli_ai(): void
+    {
+        // Yang membuat halaman ini bernilai adalah instruksinya ditampilkan
+        // apa adanya. Kalau bagian ini hilang, halamannya kehilangan maksud.
+        $this->get(route('transparansi'))
+            ->assertOk()
+            ->assertSee('Kamu membaca poster informasi peluang mahasiswa')
+            ->assertSee('Nilai seberapa cocok seorang mahasiswa');
+    }
+
+    public function test_transparansi_terbuka_untuk_tamu(): void
+    {
+        // Penilai lomba tidak punya akun. Halaman ini tidak boleh terkunci.
+        $this->assertGuest();
+
+        $this->get(route('transparansi'))->assertOk();
     }
 
     public function test_halaman_periksa_admin_tergambar(): void

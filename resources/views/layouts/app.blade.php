@@ -65,6 +65,7 @@
                 @endphp
 
                 <a href="{{ route('peluang.index') }}" class="{{ $tautan }}">Katalog</a>
+                <a href="{{ route('transparansi') }}" class="{{ $tautan }} hidden md:inline-block">Transparansi AI</a>
 
                 @guest
                     <a href="{{ route('masuk') }}" class="{{ $tautan }}">Masuk</a>
@@ -160,6 +161,13 @@
             <p class="text-xs text-dasar-500">
                 Diselenggarakan oleh Creative Computer Club &middot; Universitas Trunojoyo Madura
             </p>
+
+            <a href="{{ route('transparansi') }}"
+               class="border-2 border-dasar-900 bg-dasar-100 px-3 py-1.5 text-[0.68rem] font-bold
+                      uppercase tracking-wide text-dasar-800 transition-all duration-150
+                      hover:-translate-x-0.5 hover:-translate-y-0.5 hover:bg-utama-200 hover:shadow-keras">
+                Bagaimana AI dipakai di sini
+            </a>
 
         </div>
     </footer>

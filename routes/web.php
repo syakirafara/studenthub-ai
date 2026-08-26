@@ -7,6 +7,7 @@ use App\Http\Controllers\KecocokanController;
 use App\Http\Controllers\OpportunityController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SavedItemController;
+use App\Http\Controllers\TransparansiController;
 use App\Http\Controllers\UnggahPosterController;
 use Illuminate\Support\Facades\Route;
 
@@ -19,6 +20,15 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [OpportunityController::class, 'depan'])->name('depan');
 
 Route::get('/peluang', [OpportunityController::class, 'index'])->name('peluang.index');
+
+/*
+ | Halaman transparansi sengaja TERBUKA untuk umum.
+ |
+ | Isinya menjelaskan bagaimana AI dipakai, lengkap dengan instruksi aslinya
+ | dan angka akurasi yang dihitung dari catatan sistem. Menyembunyikannya di
+ | balik login akan menggagalkan seluruh maksudnya.
+ */
+Route::get('/transparansi', [TransparansiController::class, 'index'])->name('transparansi');
 Route::get('/peluang/{peluang}', [OpportunityController::class, 'show'])->name('peluang.show');
 
 /*
